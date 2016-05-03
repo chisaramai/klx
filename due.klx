@@ -1,0 +1,44 @@
+*
+* University of Applied Science
+* 07 Departement of Computer Science and Mathematics
+* course: "compiler construction"
+*
+* author : Sarah Eydel
+* date:     2016/04/30
+*
+* new language: "klx"
+*
+
+// commento
+
+::pacman
+
+1^2 // power
+1*2 // mul
+1-2 // minus
+1+2 // plus
+1%2 // modulo
+
+
+:scala 4 
+:rgb 200 150 0 
+:125
+::cerchio
+
+:4 
+::poligono
+
+:100 :50 ::rettangolo
+
+:600
+::pacman
+
+
+:scala 3 ::kleckse*
+
+
+:scala :: pacman		// scalare
+:gira 45 :120::pacman 		// rotate
+:colora 255 200 0 ::cerchio 	// color
+
+

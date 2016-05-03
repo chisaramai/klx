@@ -1,0 +1,15 @@
+*
+* University of Applied Science
+* 07 Departement of Computer Science and Mathematics
+* course: "compiler construction"
+*
+* author : Sarah Eydel
+* date:     2016/04/30
+*
+* new language: "klx"
+*
+
+// commento
+
+@(100,100)  <X  pacman[200];
+// @(100,100) %(10) ~(90) rgb(azzuro) => pacman[100] ;
