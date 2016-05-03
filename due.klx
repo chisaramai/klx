@@ -11,34 +11,30 @@
 
 // commento
 
-::pacman
+:250:230:0	::colora
+:30*2
+	:::pacman
+
+:0:250:0::colora
+:125
+:::cerchio
+
+:8
+:::poligono
+
+:150:::quadrato
+
+:azzuro::colora
+:160
+:::pacman
+
+
+:5	::scala		:::pacman	// scalare
+:45	::gira		:::pacman	// rotate
+:rosso	::colora	:::cerchio 	// color
 
 1^2 // power
 1*2 // mul
 1-2 // minus
 1+2 // plus
 1%2 // modulo
-
-
-:scala 4 
-:rgb 200 150 0 
-:125
-::cerchio
-
-:4 
-::poligono
-
-:100 :50 ::rettangolo
-
-:600
-::pacman
-
-
-:scala 3 ::kleckse*
-
-
-:scala :: pacman		// scalare
-:gira 45 :120::pacman 		// rotate
-:colora 255 200 0 ::cerchio 	// color
-
-
