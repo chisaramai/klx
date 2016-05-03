@@ -1,0 +1,20 @@
+%!PS-Adobe
+
+/polygono { 
+    4 dict begin
+    /N exch def 
+    /r exch def 
+    /A 360 N div def 
+    r 0 moveto
+    N { A cos r mul A sin r mul lineto /A A 360 N div add def
+        } repeat 
+        closepath 
+        end 
+} def 
+
+10 10 scale 
+10 10 translate 
+0.2 setlinewidth 
+6 6 /polygono
+	
+showpage

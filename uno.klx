@@ -1,0 +1,38 @@
+
+*   author: Sarah Eydel
+*   date:   2016/04/28
+*
+
+// creare
+cerchio[];
+cerchio[30];
+
+klx cer = cerchio[50]@(400,500)%(20).rgb(1,0,0.5);
+
+// coordinate polari
+cer@(300,200);
+
+// cambiare scala a qc.
+cer%(20);
+
+// girare
+cer~(45°);
+cer~(-90°);
+
+// colore
+cer.rgb(1,0,0);
+
+cer.rgb(rosso);
+cer.rgb(verde);
+cer.rgb(azzuro);
+
+// le forme
+rettangolo[300,400]@(200,100);
+settore[];
+triangolo[]~(45°);
+cerchio[];
+
+// metodi
+metodo geo(a,b){
+    
+}
