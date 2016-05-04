@@ -1,4 +1,3 @@
 #!bin/bash
-make
-./klx < due.klx > due.ps
+makes
 ghostscript due.ps

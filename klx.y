@@ -127,6 +127,7 @@ gira:	parametri QUADDROPUNTI GIRA
 colora:	DUEPUNTI colore QUADDROPUNTI COLORA
 {
 	printf(" setrgbcolor\n");
+	printf("fill\n");
 }
 ;
 

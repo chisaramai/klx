@@ -1,5 +1,5 @@
 
-all: klx
+all: klx due.ps
 
 klx: lex.yy.c klx.tab.c klx.tab.h
 	gcc lex.yy.c klx.tab.c -lfl -o klx
