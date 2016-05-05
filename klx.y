@@ -1,32 +1,58 @@
 %{
-
+#include <stdlib.h>
+#include <stdarg.h>
 #include <stdio.h>
+
 extern int yylex(void);
-int yyerror(const char *msg);
-extern int yylineno;}
+extern int yylineno;
+extern void yyerror(char *s, ...);
+
+/* nodes in the abstract syntax tree */
+struct ast {
+int nodetype;
+struct ast *l;
+struct ast *r;
+};
+struct numval {
+	int nodetype;
+
+	 /* type K for constant */
+	double number;
+};
+
+/* build an AST */
+struct ast * newast(int nodetype, struct ast *l, struct ast *r);
+struct ast * newnum(double d);
+
+/* evaluate an AST */
+double eval(struct ast *);
+
+/* delete and free an AST */
+void treefree(struct ast *);
 
 %}
 
 %union {
-struct ast *a;
-double d;
+	struct ast *a;
+	double d;
 }
 
 %token CERCHIO RETTANGOLO TRIANGOLO SETTORE PACMAN PENTAGONO POLIGONO QUADRATO
 %token SEMICOLON COMMA DUEPUNTI QUADDROPUNTI SEIPUNTI
 %token SQOPEN SQCLOSE
-%token KLAMMERAFFE
+%token KLAMMERAFFE EOL
 %token OPEN CLOSE
 %token SWOPEN SWCLOSE
 %token <d> NUMERO
 %token COLORA SCALA GIRA LUOGO
 %token ROSSO VERDE AZZURO GIALLO
 %token DOLLAR SNAKE HASH
-
-%type <a> exp factor term
+%type <a> exp
 
 %left '+' '-'
 %left '*' '/'
+%nonassoc '|' UMINUS
+
 %%
 
 // :GRAMMAR
@@ -50,21 +76,14 @@ stmt:	klecks;
 
 // ARITHMETIC
 
-exp: factor
-| exp '+' factor { $$ = newast('+', $1,$3); }
-| exp '-' factor { $$ = newast('-', $1,$3); }
-;
-factor: term
-| factor '*' term { $$ = newast('*', $1,$3); }
-| factor '/' term {	if ($3 == 0)
-                        	yyerror("divide by zero");
-			else
-				$$ = newast('/', $1,$3); }
-;
-term: NUMBER { $$ = newnum($1); }
-| '|' term { $$ = newast('|', $2, NULL); }
-| '(' exp ')' { $$ = $2; }
-| '-' term { $$ = newast('M', $2, NULL); }
+exp: 	exp '+' exp	 	{ $$ = newast('+', $1,$3); }
+	| exp '-' exp	 	{ $$ = newast('-', $1,$3); }
+	| exp '*' exp 		{ $$ = newast('*', $1,$3); }
+	| exp '/' exp 		{ $$ = newast('/', $1,$3); }
+	| '|' exp		{ $$ = newast('|', $2, NULL); }
+	| '(' exp ')' 		{ $$ = $2; }
+	| '-' exp %prec UMINUS	{ $$ = newast('M', NULL, $2); }
+	| NUMERO 		{ $$ = newnum($1); }
 ;
 
 
@@ -73,25 +92,29 @@ term: NUMBER { $$ = newnum($1); }
 klecks: setup optlist figura teardown;
 
 figura: DUEPUNTI exp SEIPUNTI PACMAN 
-{	
-	int rad = $2;
+{
+	
+	double rad = eval($2);
+	treefree($2);
 	printf("0 0 %d 30 330 arc\n0 0 lineto\n",rad);
 }
 ;
 
 figura: DUEPUNTI exp SEIPUNTI CERCHIO
 {
-	int rad = $2;
-	printf("0 0 %d 0 360 arc\n0 0 lineto\n",rad);
+	double rad = eval($2);
+	treefree($2);
+	printf("0 0 %f 0 360 arc\n0 0 lineto\n",rad);
 }
 ;
 
 figura: DUEPUNTI exp SEIPUNTI POLIGONO
 {
-	int sides = $2;
+	double sides = eval($2);
+	treefree($2);
         int side_length = 30;
 	printf("/polygono { 4 dict begin \n/N exch def /r exch def \n/A 360 N div def	r 0 moveto	\nN { A cos r mul A sin r mul lineto /A A 360 N div add def} repeat closepath end } def ");
-	printf("0.2 setlinewidth %d %d polygono \n", side_length, sides);
+	printf("0.2 setlinewidth %d %f polygono \n", side_length, sides);
 }
 ;
 setup:
@@ -118,15 +141,17 @@ opt:	scala | gira | colora | luogo;
 // .* SCALA
 scala:	DUEPUNTI exp QUADDROPUNTI SCALA
 {
-	int fattore = $1;
-	printf("%d %d scale",fattore, fattore);
+	double fattore = eval($2);
+	treefree($2);
+	printf("%f %f scale",fattore, fattore);
 }
 ;
 // .* GIRA
 gira:	DUEPUNTI exp QUADDROPUNTI GIRA
 {
-	int arc = $1;
-	printf("%d %d rotate",arc);
+	double arc = eval($2);
+	treefree($2);
+	printf("%f %f rotate",arc);
 }
 ;
 
@@ -148,16 +173,19 @@ colora:	DUEPUNTI colore QUADDROPUNTI COLORA
 		// .* RGBCODE
 		rgbcode:	exp DUEPUNTI exp DUEPUNTI exp
 		{	 
-			printf("%f %f %f ", $1/255.0, $3/255.0, $5/255.0); 
+			printf("%f %f %f ", eval($1)/255.0, eval($3)/255.0, eval($5)/255.0); 
+			treefree($1); treefree($3); treefree($5);
 		};
             
         
 // .* LUOGO
 luogo:	DUEPUNTI exp DUEPUNTI exp QUADDROPUNTI LUOGO
 {
-	int x = $2;
-	int y = $4;
-	printf("%d %d translate\n",x,y);  
+	double x = eval($2);
+	treefree($2);
+	double y = eval($4);
+	treefree($4);
+	printf("%f %f translate\n",x,y);  
 }
 ;
 
@@ -172,12 +200,84 @@ trailer:
 
 %%
 
-int yyerror(const char *msg){
-	fprintf(stderr,"Error: %s\n", msg);
-	return 0;
+struct ast *
+newast(int nodetype, struct ast *l, struct ast *r)
+{
+        struct ast *a = malloc(sizeof(struct ast));
+        if(!a) {
+        yyerror("out of space");
+        exit(0);
+        }
+        a->nodetype = nodetype;
+        a->l = l;
+        a->r = r;
+        return a;
 }
 
-int main(void){
-	yyparse();
-	return 0;
+struct ast *
+newnum(double d)
+{
+        struct numval *a = malloc(sizeof(struct numval));
+        if(!a) {
+        yyerror("out of space");
+        exit(0);
+        }
+        a->nodetype = 'K';
+        a->number = d;
+        return (struct ast *)a;
 }
+
+
+double eval(struct ast *a){
+	double v; // calculated value of this subtree
+	switch(a-> nodetype) {
+	case 'K': v = ((struct numval *)a)->number; break;
+	case '+': v = eval(a->l) + eval(a->r); break;
+	case '-': v = eval(a->l) - eval(a->r); break;
+	case '*': v = eval(a->l) * eval(a->r); break;
+	case '/': v = eval(a->l) / eval(a->r); break;
+	case '|': v = eval(a->l); if(v < 0) v = -v; break;
+	case 'M': v = -eval(a->l); break;
+	default: printf("internal error: bad node %c\n", a->nodetype);
+	}
+	return v;
+}
+
+void treefree(struct ast *a){
+
+	switch(a->nodetype) {
+		/* two subtrees */
+		case '+':
+		case '-':
+		case '*':
+		case '/':
+			treefree(a->r);
+		
+		/* one subtree */
+		case '|':
+		case 'M':
+			treefree(a->l);
+	
+		/* no subtree */
+		case 'K':
+		free(a);
+		break;
+		default: printf("internal error: free bad node %c\n", a->nodetype);
+	}
+}
+
+
+
+void yyerror(char *s, ...){
+	va_list ap;
+	va_start(ap, s);
+	fprintf(stderr, "%d: error: ", yylineno);
+	vfprintf(stderr, s, ap);
+	fprintf(stderr, "\n");
+}
+
+int main(){
+	printf("> ");
+	return yyparse();
+}
+

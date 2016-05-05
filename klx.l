@@ -3,6 +3,7 @@
 
 %{
 #include "klx.tab.h"
+#include <math.h>
 %}
 
 %option yylineno
