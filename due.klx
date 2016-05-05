@@ -10,33 +10,9 @@
 *
 
 // commento
-:-300:-200	::luogo
+
+:200:200	::luogo
 :250:230:0	::colora
-:20*2
+:20+2*3
 	:::pacman
 
-:100:200	::luogo
-:0:250:		0::colora
-:125
-:::cerchio
-
-:50:70::luogo
-:6
-:::poligono
-:-100:-200::luogo
-:50:::quadrato
-
-:azzuro::colora
-:60
-:::pacman
-
-
-:-100:-100	::luogo	:5		::scala		:::pacman	// scalare
-:45	::gira		:::pacman	// rotate
-:rosso	::colora	:::cerchio 	// color
-
-1^2 // power
-1*2 // mul
-1-2 // minus
-1+2 // plus
-1%2 // modulo

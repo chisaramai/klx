@@ -1,4 +1,4 @@
-    // definitions -->
+    // definitions
 %option noyywrap
 
 %{
@@ -7,12 +7,31 @@
 
 %option yylineno
 
-%%
-    // rules -->
+/* float exponent */
+EXP ([Ee][+-]?[0-9]+)
 
-^("\*").*		; // * comments
-\(			return OPEN;
-\)			return CLOSE;
+%%
+	
+"+" |
+"-" |
+"*" |
+"/" |
+"|" |
+"(" |
+")" |
+";" |	
+"[" |
+"]" |
+"@" |
+"%" |
+"$" |
+"#" |
+"{" |
+"}" |
+"~" |
+"," 	 		{ return yytext[0]; }
+[0-9]+\.[0-9]*{EXP}? |
+\.?[0-9]+{EXP}? 	{ yylval.d = atof(yytext); return NUMERO; }
 cerchio			return CERCHIO;
 rettangolo		return RETTANGOLO;
 triangolo		return TRIANGOLO;
@@ -24,33 +43,18 @@ quadrato		return QUADRATO;
 ":::"			return SEIPUNTI;
 "::"			return QUADDROPUNTI;
 ":"			return DUEPUNTI;
-';'			return SEMICOLON;
-"["			return SQOPEN;
-"]"			return SQCLOSE;
-@			return KLAMMERAFFE;
-\%			return PERCENTAGE;
-#			return HASH;
-"$"			return DOLLAR;
-\{			return SWOPEN;
-\}			return SWCLOSE;
-"~"			return SNAKE;
-,			return COMMA;
 rosso			return ROSSO;
-("verde")		return VERDE;
-("azzuro")		return AZZURO;
-("colora")		return COLORA;
-("scala")		return SCALA;
-("gira")		return GIRA;
-("luogo")		return LUOGO;
-[a-zA-Z]+               return CHARS;
-\/\/.*			; // comments like this one
-0|-?[1-9][0-9]*		yylval = atoi(yytext);       return NUMERO;
-[[:space:]]		;
-'+'			return PLUS;
-'-'			return MINUS;
-'%'			return MODULO;
-'^'			return POW;
-\*			return MUL;
-.			fprintf(stderr, "WARNING(%d) : '%s' ignored\n",yylineno ,yytext);
+verde			return VERDE;
+azzuro			return AZZURO;
+colora			return COLORA;
+scala			return SCALA;
+gira			return GIRA;
+luogo			return LUOGO;
+"\n"                    return EOL;
+"//".*		;
+^["*"].*		;
+[ \t]			;    { /* ignore whitespace */ }
+.			fprintf(stderr, "WARNING(%d) : '%s' is not in the lexicon\n", yylineno, yytext);
 %%
- // usercode 
+ // usercode
+
