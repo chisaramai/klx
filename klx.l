@@ -51,10 +51,8 @@ colora			return COLORA;
 scala			return SCALA;
 gira			return GIRA;
 luogo			return LUOGO;
-"\n"                    return EOL;
-"//".*		;
-^["*"].*		;
-[ \t]			;    { /* ignore whitespace */ }
+"//".*			;
+[ \t\n]			;    { /* ignore whitespace */ }
 .			fprintf(stderr, "WARNING(%d) : '%s' is not in the lexicon\n", yylineno, yytext);
 %%
  // usercode

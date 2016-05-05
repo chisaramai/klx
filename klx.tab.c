@@ -74,9 +74,9 @@ extern void yyerror(char *s, ...);
 
 /* nodes in the abstract syntax tree */
 struct ast {
-int nodetype;
-struct ast *l;
-struct ast *r;
+	int nodetype;
+	struct ast *l;
+	struct ast *r;
 };
 struct numval {
 	int nodetype;
@@ -1378,7 +1378,7 @@ yyreduce:
 	
 	double rad = eval((yyvsp[-2].a));
 	treefree((yyvsp[-2].a));
-	printf("0 0 %d 30 330 arc\n0 0 lineto\n",rad);
+	printf("0 0 %f 30 330 arc\n0 0 lineto\n",rad);
 }
 #line 1384 "klx.tab.c" /* yacc.c:1646  */
     break;
@@ -1734,8 +1734,8 @@ newast(int nodetype, struct ast *l, struct ast *r)
 {
         struct ast *a = malloc(sizeof(struct ast));
         if(!a) {
-        yyerror("out of space");
-        exit(0);
+        	yyerror("out of space");
+        	exit(0);
         }
         a->nodetype = nodetype;
         a->l = l;
@@ -1789,7 +1789,7 @@ void treefree(struct ast *a){
 	
 		/* no subtree */
 		case 'K':
-		free(a);
+			free(a);
 		break;
 		default: printf("internal error: free bad node %c\n", a->nodetype);
 	}
@@ -1806,7 +1806,6 @@ void yyerror(char *s, ...){
 }
 
 int main(){
-	printf("> ");
 	return yyparse();
 }
 

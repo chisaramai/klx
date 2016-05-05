@@ -9,9 +9,9 @@ extern void yyerror(char *s, ...);
 
 /* nodes in the abstract syntax tree */
 struct ast {
-int nodetype;
-struct ast *l;
-struct ast *r;
+	int nodetype;
+	struct ast *l;
+	struct ast *r;
 };
 struct numval {
 	int nodetype;
@@ -96,7 +96,7 @@ figura: DUEPUNTI exp SEIPUNTI PACMAN
 	
 	double rad = eval($2);
 	treefree($2);
-	printf("0 0 %d 30 330 arc\n0 0 lineto\n",rad);
+	printf("0 0 %f 30 330 arc\n0 0 lineto\n",rad);
 }
 ;
 
@@ -205,8 +205,8 @@ newast(int nodetype, struct ast *l, struct ast *r)
 {
         struct ast *a = malloc(sizeof(struct ast));
         if(!a) {
-        yyerror("out of space");
-        exit(0);
+        	yyerror("out of space");
+        	exit(0);
         }
         a->nodetype = nodetype;
         a->l = l;
@@ -260,7 +260,7 @@ void treefree(struct ast *a){
 	
 		/* no subtree */
 		case 'K':
-		free(a);
+			free(a);
 		break;
 		default: printf("internal error: free bad node %c\n", a->nodetype);
 	}
@@ -277,7 +277,6 @@ void yyerror(char *s, ...){
 }
 
 int main(){
-	printf("> ");
 	return yyparse();
 }
 
