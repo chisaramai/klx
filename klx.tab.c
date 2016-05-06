@@ -1400,7 +1400,7 @@ yyreduce:
 	treefree((yyvsp[-2].a));
         int side_length = 30;
 	printf("/polygono { 4 dict begin \n/N exch def /r exch def \n/A 360 N div def	r 0 moveto	\nN { A cos r mul A sin r mul lineto /A A 360 N div add def} repeat closepath end } def ");
-	printf("0.2 setlinewidth %d %f polygono \n", side_length, sides);
+	printf("0.2 setlinewidth %d %d polygono \n", side_length,(int) sides);
 }
 #line 1406 "klx.tab.c" /* yacc.c:1646  */
     break;

@@ -31,8 +31,7 @@ EXP ([Ee][+-]?[0-9]+)
 "}" |
 "~" |
 "," 	 		{ return yytext[0]; }
-[0-9]+\.[0-9]*{EXP}? |
-\.?[0-9]+{EXP}? 	{ yylval.d = atof(yytext); return NUMERO; }
+[+-]?([0-9]+\.[0-9]*{EXP}?|\.?[0-9]+{EXP}?) 	{ yylval.d = atof(yytext); return NUMERO; }
 cerchio			return CERCHIO;
 rettangolo		return RETTANGOLO;
 triangolo		return TRIANGOLO;
