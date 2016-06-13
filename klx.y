@@ -1,40 +1,18 @@
+
 %{
-#include <stdlib.h>
-#include <stdarg.h>
 #include <stdio.h>
+#include "symtab.h"
 
-extern int yylex(void);
 extern int yylineno;
-extern void yyerror(char *s, ...);
-
-/* nodes in the abstract syntax tree */
-struct ast {
-	int nodetype;
-	struct ast *l;
-	struct ast *r;
-};
-struct numval {
-	int nodetype;
-
-	 /* type K for constant */
-	double number;
-};
-
-/* build an AST */
-struct ast * newast(int nodetype, struct ast *l, struct ast *r);
-struct ast * newnum(double d);
-
-/* evaluate an AST */
-double eval(struct ast *);
-
-/* delete and free an AST */
-void treefree(struct ast *);
-
+int yylex(void);
+void yyerror(const char *msg);
 %}
 
+
 %union {
-	struct ast *a;
+	int i;
 	double d;
+	node *n;
 }
 
 %token CERCHIO RETTANGOLO TRIANGOLO SETTORE PACMAN PENTAGONO POLIGONO QUADRATO
@@ -42,16 +20,22 @@ void treefree(struct ast *);
 %token SQOPEN SQCLOSE
 %token KLAMMERAFFE EOL
 %token OPEN CLOSE
+%token SAME LESSSAME GREATERSAME
 %token SWOPEN SWCLOSE
-%token <d> NUMERO
+%token <i> INTEGER
+%token <d> DOUBLE
+%token <n> ID
 %token COLORA SCALA GIRA LUOGO
 %token ROSSO VERDE AZZURO GIALLO
-%token DOLLAR SNAKE HASH
-%type <a> exp
+%token DOLLAR SNAKE HASH VAR
+%token IF THEN WHILE
+%token FOREACH FOR
 
-%left '+' '-'
-%left '*' '/'
-%nonassoc '|' UMINUS
+
+%left '|' '&' '!'
+
+%define parse.error verbose
+
 
 %%
 
@@ -72,49 +56,84 @@ setting:
 // .* STMLIST
 stmlist:;
 stmlist:stmlist stmt;	
-stmt:	klecks;
+
+
+stmt: 	WHILE {printf("{\n");} 
+		OPEN bool CLOSE { printf(" not {exit} if\n");}
+		stmt {printf("} loop\n");};
+stmt :VAR ID ';'{$2-> declared=1; printf("/klx%s 0 def \n , $2 -> symbol");};
+stmt: IF bool THEN 	{printf("{\n");} stmt { printf("}if\n"); };
+stmt: '{' {scope_open();printf("4 dict begin\n"); } stmlist '}' {scope_close(); printf("end\n");};
+
+stmt: ID '=' expr SEMICOLON {if(!$1 -> declared) yyerror("Undeclared variable!");  printf("/klx%s exch def\n",$1->symbol);};
+
+stmt: {printf("gsave\n");} optlist klecks {printf("grestore\n");};
+
+//  BOOLEANS
+
+bool: 	boolpraefix;
+bool: 	bool '&' boolpraefix 		{printf("and ");};
+bool:	bool '|' boolpraefix 		{printf("or ");};
+
+boolpraefix: boolatomic;
+boolpraefix: '!' boolatomic  		{printf("not ");}; 
+
+boolatomic: expr '<' expr 		{printf("lt ");};
+boolatomic: expr LESSSAME expr 		{printf("le ");};
+boolatomic: expr '>' expr 		{printf("gt ");};
+boolatomic: expr GREATERSAME expr	{printf("ge ");};
+boolatomic: expr SAME expr		{printf("eq ");};
+boolatomic: OPEN bool CLOSE;
 
 // ARITHMETIC
 
-exp: 	exp '+' exp	 	{ $$ = newast('+', $1,$3); }
-	| exp '-' exp	 	{ $$ = newast('-', $1,$3); }
-	| exp '*' exp 		{ $$ = newast('*', $1,$3); }
-	| exp '/' exp 		{ $$ = newast('/', $1,$3); }
-	| '|' exp		{ $$ = newast('|', $2, NULL); }
-	| '(' exp ')' 		{ $$ = $2; }
-	| '-' exp %prec UMINUS	{ $$ = newast('M', NULL, $2); }
-	| NUMERO 		{ $$ = newnum($1); }
-;
+expr: product;
+expr: expr '+' product 			{ printf("add "); };
+expr: expr '-' product 			{ printf("sub "); };
 
+product: exponent;
+product: product '*' exponent 		{printf("mul ");};
+product: product '/' exponent 		{printf("div ");};
+
+exponent: praefix; 
+exponent: praefix '^' exponent 		{printf("exp \n");};
+
+praefix: atomic;
+praefix: '+' atomic;
+praefix: '-' atomic 			{printf("neg \n");};
+
+atomic: INTEGER 			{printf("%d ", $1); };
+atomic: DOUBLE 				{printf("%f ", $1);};
+atomic: ID 				{if(!$1) yyerror("Undeclared Variable!"); printf("klx%s ", $1 -> symbol);};
+atomic: OPEN expr CLOSE;
 
 
 // .* KLECKS    
 klecks: setup optlist figura teardown;
 
-figura: DUEPUNTI exp SEIPUNTI PACMAN 
+figura: SEIPUNTI PACMAN 
 {
-	
-	double rad = eval($2);
-	treefree($2);
-	printf("0 0 %f 30 330 arc\n0 0 lineto\n",rad);
+	printf(" newpath 0 0 60 30 330 arc\n0 0 lineto\n");
 }
 ;
 
-figura: DUEPUNTI exp SEIPUNTI CERCHIO
+figura: SEIPUNTI CERCHIO
 {
-	double rad = eval($2);
-	treefree($2);
-	printf("0 0 %f 0 360 arc\n0 0 lineto\n",rad);
+	printf("newpath 0 0 60 0 360 arc\n0 0 lineto\n");
 }
 ;
 
-figura: DUEPUNTI exp SEIPUNTI POLIGONO
-{
-	double sides = eval($2);
-	treefree($2);
-        int side_length = 30;
-	printf("/polygono { 4 dict begin \n/N exch def /r exch def \n/A 360 N div def	r 0 moveto	\nN { A cos r mul A sin r mul lineto /A A 360 N div add def} repeat closepath end } def ");
-	printf("0.2 setlinewidth %d %d polygono \n", side_length,(int) sides);
+figura: SEIPUNTI POLIGONO
+{	printf("newpath\n");
+	printf("/polygono {");
+	printf("4 dict begin \n");
+	printf("/N exch def /r exch def \n");
+	printf("/A 360 N div def");
+	printf("r 0 moveto\n");
+	printf("N { A cos r mul A sin r mul lineto /A A 360 N div add def} repeat ");
+				printf("closepath"); 
+				printf("end } def ");
+	printf("polygono\n");
 }
 ;
 setup:
@@ -131,7 +150,7 @@ teardown:
 ;
 
 
-// .* MODLIST
+// .* OPTLIST
 optlist:;
 optlist:	optlist opt; 
 
@@ -139,19 +158,15 @@ optlist:	optlist opt;
 opt:	scala | gira | colora | luogo; 
 
 // .* SCALA
-scala:	DUEPUNTI exp QUADDROPUNTI SCALA
+scala:	DUEPUNTI expr QUADDROPUNTI SCALA
 {
-	double fattore = eval($2);
-	treefree($2);
-	printf("%f %f scale",fattore, fattore);
+	printf("scale ");
 }
 ;
 // .* GIRA
-gira:	DUEPUNTI exp QUADDROPUNTI GIRA
+gira:	DUEPUNTI expr QUADDROPUNTI GIRA
 {
-	double arc = eval($2);
-	treefree($2);
-	printf("%f %f rotate",arc);
+	printf("rotate ");
 }
 ;
 
@@ -171,21 +186,14 @@ colora:	DUEPUNTI colore QUADDROPUNTI COLORA
                 	;
                     
 		// .* RGBCODE
-		rgbcode:	exp DUEPUNTI exp DUEPUNTI exp
-		{	 
-			printf("%f %f %f ", eval($1)/255.0, eval($3)/255.0, eval($5)/255.0); 
-			treefree($1); treefree($3); treefree($5);
-		};
+		rgbcode:	expr DUEPUNTI expr DUEPUNTI expr
+		
             
         
 // .* LUOGO
-luogo:	DUEPUNTI exp DUEPUNTI exp QUADDROPUNTI LUOGO
+luogo:	DUEPUNTI expr DUEPUNTI expr QUADDROPUNTI LUOGO
 {
-	double x = eval($2);
-	treefree($2);
-	double y = eval($4);
-	treefree($4);
-	printf("%f %f translate\n",x,y);  
+	printf("translate\n");  
 }
 ;
 
@@ -197,86 +205,15 @@ trailer:
 }
 ;	
         
-
 %%
 
-struct ast *
-newast(int nodetype, struct ast *l, struct ast *r)
-{
-        struct ast *a = malloc(sizeof(struct ast));
-        if(!a) {
-        	yyerror("out of space");
-        	exit(0);
-        }
-        a->nodetype = nodetype;
-        a->l = l;
-        a->r = r;
-        return a;
+
+void yyerror(const char *msg){
+	fprintf(stderr,"Error: (%d) %s\n" ,yylineno, msg);
 }
 
-struct ast *
-newnum(double d)
-{
-        struct numval *a = malloc(sizeof(struct numval));
-        if(!a) {
-        yyerror("out of space");
-        exit(0);
-        }
-        a->nodetype = 'K';
-        a->number = d;
-        return (struct ast *)a;
-}
-
-
-double eval(struct ast *a){
-	double v; // calculated value of this subtree
-	switch(a-> nodetype) {
-	case 'K': v = ((struct numval *)a)->number; break;
-	case '+': v = eval(a->l) + eval(a->r); break;
-	case '-': v = eval(a->l) - eval(a->r); break;
-	case '*': v = eval(a->l) * eval(a->r); break;
-	case '/': v = eval(a->l) / eval(a->r); break;
-	case '|': v = eval(a->l); if(v < 0) v = -v; break;
-	case 'M': v = -eval(a->l); break;
-	default: printf("internal error: bad node %c\n", a->nodetype);
-	}
-	return v;
-}
-
-void treefree(struct ast *a){
-
-	switch(a->nodetype) {
-		/* two subtrees */
-		case '+':
-		case '-':
-		case '*':
-		case '/':
-			treefree(a->r);
-		
-		/* one subtree */
-		case '|':
-		case 'M':
-			treefree(a->l);
-	
-		/* no subtree */
-		case 'K':
-			free(a);
-		break;
-		default: printf("internal error: free bad node %c\n", a->nodetype);
-	}
-}
-
-
-
-void yyerror(char *s, ...){
-	va_list ap;
-	va_start(ap, s);
-	fprintf(stderr, "%d: error: ", yylineno);
-	vfprintf(stderr, s, ap);
-	fprintf(stderr, "\n");
-}
-
-int main(){
-	return yyparse();
+int main(){	
+	yyparse();
+	return 0;
 }
 

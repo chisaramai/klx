@@ -2,17 +2,4 @@
 .7 setgray
 300 400 translate
 gsave
-/polygono { 4 dict begin 
-/N exch def /r exch def 
-/A 360 N div def	r 0 moveto	
-N { A cos r mul A sin r mul lineto /A A 360 N div add def} repeat closepath end } def 0.2 setlinewidth 30 6 polygono 
-fill
-grestore
 gsave
--100.000000 100.000000 translate
-0 0 40.000000 0 360 arc
-0 0 lineto
-fill
-grestore
-
-showpage

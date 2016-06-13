@@ -64,21 +64,31 @@ extern int yydebug;
     EOL = 274,
     OPEN = 275,
     CLOSE = 276,
-    SWOPEN = 277,
-    SWCLOSE = 278,
-    NUMERO = 279,
-    COLORA = 280,
-    SCALA = 281,
-    GIRA = 282,
-    LUOGO = 283,
-    ROSSO = 284,
-    VERDE = 285,
-    AZZURO = 286,
-    GIALLO = 287,
-    DOLLAR = 288,
-    SNAKE = 289,
-    HASH = 290,
-    UMINUS = 291
+    SAME = 277,
+    LESSSAME = 278,
+    GREATERSAME = 279,
+    SWOPEN = 280,
+    SWCLOSE = 281,
+    INTEGER = 282,
+    DOUBLE = 283,
+    ID = 284,
+    COLORA = 285,
+    SCALA = 286,
+    GIRA = 287,
+    LUOGO = 288,
+    ROSSO = 289,
+    VERDE = 290,
+    AZZURO = 291,
+    GIALLO = 292,
+    DOLLAR = 293,
+    SNAKE = 294,
+    HASH = 295,
+    VAR = 296,
+    IF = 297,
+    THEN = 298,
+    WHILE = 299,
+    FOREACH = 300,
+    FOR = 301
   };
 #endif
 
@@ -87,12 +97,13 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 35 "klx.y" /* yacc.c:1909  */
+#line 12 "klx.y" /* yacc.c:1909  */
 
-	struct ast *a;
+	int i;
 	double d;
+	node *n;
 
-#line 96 "klx.tab.h" /* yacc.c:1909  */
+#line 107 "klx.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
