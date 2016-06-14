@@ -1,6 +1,6 @@
 
 %option noyywrap
-%option 
+ 
 %{
 
 #include <stdio.h> 
@@ -44,9 +44,9 @@ EXP ([Ee][+-]?[0-9]+)
 0|[1-9][0-9]*		{ yylval.i = atoi(yytext); return INTEGER;}
 [0-9]+\.[0-9]*{EXP}?|\.[0-9]+{EXP}? 	{ yylval.d = atof(yytext); return DOUBLE; }
 var			return VAR;
-"if"			return IF;
-"then"			return THEN;
-"while"			return WHILE;
+if			return IF;
+then			return THEN;
+while			return WHILE;
 cerchio			return CERCHIO;
 rettangolo		return RETTANGOLO;
 triangolo		return TRIANGOLO;

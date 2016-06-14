@@ -20,7 +20,7 @@ Terminals unused in grammar
    FOR
 
 
-State 33 conflicts: 1 shift/reduce
+State 12 conflicts: 1 shift/reduce
 
 
 Grammar
@@ -51,143 +51,140 @@ Grammar
 
    13 stmt: '{' $@4 stmlist '}'
    14     | ID '=' expr SEMICOLON
+   15     | optlist klecks
 
-   15 $@5: %empty
+   16 bool: boolpraefix
+   17     | bool '&' boolpraefix
+   18     | bool '|' boolpraefix
 
-   16 stmt: $@5 optlist klecks
+   19 boolpraefix: boolatomic
+   20            | '!' boolatomic
 
-   17 bool: boolpraefix
-   18     | bool '&' boolpraefix
-   19     | bool '|' boolpraefix
+   21 boolatomic: expr '<' expr
+   22           | expr LESSSAME expr
+   23           | expr '>' expr
+   24           | expr GREATERSAME expr
+   25           | expr SAME expr
+   26           | OPEN bool CLOSE
 
-   20 boolpraefix: boolatomic
-   21            | '!' boolatomic
+   27 expr: product
+   28     | expr '+' product
+   29     | expr '-' product
 
-   22 boolatomic: expr '<' expr
-   23           | expr LESSSAME expr
-   24           | expr '>' expr
-   25           | expr GREATERSAME expr
-   26           | expr SAME expr
-   27           | OPEN bool CLOSE
+   30 product: exponent
+   31        | product '*' exponent
+   32        | product '/' exponent
 
-   28 expr: product
-   29     | expr '+' product
-   30     | expr '-' product
+   33 exponent: praefix
+   34         | praefix '^' exponent
 
-   31 product: exponent
-   32        | product '*' exponent
-   33        | product '/' exponent
+   35 praefix: atomic
+   36        | '+' atomic
+   37        | '-' atomic
 
-   34 exponent: praefix
-   35         | praefix '^' exponent
+   38 atomic: INTEGER
+   39       | DOUBLE
+   40       | ID
+   41       | OPEN expr CLOSE
 
-   36 praefix: atomic
-   37        | '+' atomic
-   38        | '-' atomic
+   42 klecks: setup optlist figura teardown
 
-   39 atomic: INTEGER
-   40       | DOUBLE
-   41       | ID
-   42       | OPEN expr CLOSE
+   43 figura: SEIPUNTI PACMAN
+   44       | SEIPUNTI CERCHIO
+   45       | SEIPUNTI POLIGONO
 
-   43 klecks: setup optlist figura teardown
+   46 setup: %empty
 
-   44 figura: SEIPUNTI PACMAN
-   45       | SEIPUNTI CERCHIO
-   46       | SEIPUNTI POLIGONO
+   47 teardown: %empty
 
-   47 setup: %empty
+   48 optlist: %empty
+   49        | optlist opt
 
-   48 teardown: %empty
+   50 opt: scala
+   51    | gira
+   52    | colora
+   53    | luogo
 
-   49 optlist: %empty
-   50        | optlist opt
+   54 scala: DUEPUNTI expr QUADDROPUNTI SCALA
 
-   51 opt: scala
-   52    | gira
-   53    | colora
-   54    | luogo
+   55 gira: DUEPUNTI expr QUADDROPUNTI GIRA
 
-   55 scala: DUEPUNTI expr QUADDROPUNTI SCALA
+   56 colora: DUEPUNTI colore QUADDROPUNTI COLORA
 
-   56 gira: DUEPUNTI expr QUADDROPUNTI GIRA
+   57 colore: ROSSO
+   58       | VERDE
+   59       | AZZURO
+   60       | rgbcode
 
-   57 colora: DUEPUNTI colore QUADDROPUNTI COLORA
+   61 rgbcode: expr DUEPUNTI expr DUEPUNTI expr
 
-   58 colore: ROSSO
-   59       | VERDE
-   60       | AZZURO
-   61       | rgbcode
+   62 luogo: DUEPUNTI expr DUEPUNTI expr QUADDROPUNTI LUOGO
 
-   62 rgbcode: expr DUEPUNTI expr DUEPUNTI expr
-
-   63 luogo: DUEPUNTI expr DUEPUNTI expr QUADDROPUNTI LUOGO
-
-   64 trailer: %empty
+   63 trailer: %empty
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
-'!' (33) 21
-'&' (38) 18
-'*' (42) 32
-'+' (43) 29 37
-'-' (45) 30 38
-'/' (47) 33
+'!' (33) 20
+'&' (38) 17
+'*' (42) 31
+'+' (43) 28 36
+'-' (45) 29 37
+'/' (47) 32
 ';' (59) 9
-'<' (60) 22
+'<' (60) 21
 '=' (61) 14
-'>' (62) 24
-'^' (94) 35
+'>' (62) 23
+'^' (94) 34
 '{' (123) 13
-'|' (124) 19
+'|' (124) 18
 '}' (125) 13
 error (256)
-CERCHIO (258) 45
+CERCHIO (258) 44
 RETTANGOLO (259)
 TRIANGOLO (260)
 SETTORE (261)
-PACMAN (262) 44
+PACMAN (262) 43
 PENTAGONO (263)
-POLIGONO (264) 46
+POLIGONO (264) 45
 QUADRATO (265)
 SEMICOLON (266) 14
 COMMA (267)
-DUEPUNTI (268) 55 56 57 62 63
-QUADDROPUNTI (269) 55 56 57 63
-SEIPUNTI (270) 44 45 46
+DUEPUNTI (268) 54 55 56 61 62
+QUADDROPUNTI (269) 54 55 56 62
+SEIPUNTI (270) 43 44 45
 SQOPEN (271)
 SQCLOSE (272)
 KLAMMERAFFE (273)
 EOL (274)
-OPEN (275) 8 27 42
-CLOSE (276) 8 27 42
-SAME (277) 26
-LESSSAME (278) 23
-GREATERSAME (279) 25
+OPEN (275) 8 26 41
+CLOSE (276) 8 26 41
+SAME (277) 25
+LESSSAME (278) 22
+GREATERSAME (279) 24
 SWOPEN (280)
 SWCLOSE (281)
-INTEGER (282) 39
-DOUBLE (283) 40
-ID (284) 9 14 41
-COLORA (285) 57
-SCALA (286) 55
-GIRA (287) 56
-LUOGO (288) 63
-ROSSO (289) 58
-VERDE (290) 59
-AZZURO (291) 60
+INTEGER (282) 38
+DOUBLE (283) 39
+ID (284) 9 14 40
+COLORA (285) 56
+SCALA (286) 54
+GIRA (287) 55
+LUOGO (288) 62
+ROSSO (289) 57
+VERDE (290) 58
+AZZURO (291) 59
 GIALLO (292)
 DOLLAR (293)
 SNAKE (294)
 HASH (295)
-VAR (296) 9
-IF (297) 11
-THEN (298) 11
-WHILE (299) 8
-FOREACH (300)
-FOR (301)
+IF (296) 11
+THEN (297) 11
+WHILE (298) 8
+FOREACH (299)
+FOR (300)
+VAR (301) 9
 
 
 Nonterminals, with rules where they appear
@@ -203,7 +200,7 @@ setting (64)
 stmlist (65)
     on left: 4 5, on right: 1 5 13
 stmt (66)
-    on left: 8 9 11 13 14 16, on right: 5 8 11
+    on left: 8 9 11 13 14 15, on right: 5 8 11
 $@1 (67)
     on left: 6, on right: 8
 $@2 (68)
@@ -212,51 +209,49 @@ $@3 (69)
     on left: 10, on right: 11
 $@4 (70)
     on left: 12, on right: 13
-$@5 (71)
-    on left: 15, on right: 16
-bool (72)
-    on left: 17 18 19, on right: 8 11 18 19 27
-boolpraefix (73)
-    on left: 20 21, on right: 17 18 19
-boolatomic (74)
-    on left: 22 23 24 25 26 27, on right: 20 21
-expr (75)
-    on left: 28 29 30, on right: 14 22 23 24 25 26 29 30 42 55 56 62
-    63
-product (76)
-    on left: 31 32 33, on right: 28 29 30 32 33
-exponent (77)
-    on left: 34 35, on right: 31 32 33 35
-praefix (78)
-    on left: 36 37 38, on right: 34 35
-atomic (79)
-    on left: 39 40 41 42, on right: 36 37 38
-klecks (80)
-    on left: 43, on right: 16
-figura (81)
-    on left: 44 45 46, on right: 43
-setup (82)
-    on left: 47, on right: 43
-teardown (83)
-    on left: 48, on right: 43
-optlist (84)
-    on left: 49 50, on right: 16 43 50
-opt (85)
-    on left: 51 52 53 54, on right: 50
-scala (86)
+bool (71)
+    on left: 16 17 18, on right: 8 11 17 18 26
+boolpraefix (72)
+    on left: 19 20, on right: 16 17 18
+boolatomic (73)
+    on left: 21 22 23 24 25 26, on right: 19 20
+expr (74)
+    on left: 27 28 29, on right: 14 21 22 23 24 25 28 29 41 54 55 61
+    62
+product (75)
+    on left: 30 31 32, on right: 27 28 29 31 32
+exponent (76)
+    on left: 33 34, on right: 30 31 32 34
+praefix (77)
+    on left: 35 36 37, on right: 33 34
+atomic (78)
+    on left: 38 39 40 41, on right: 35 36 37
+klecks (79)
+    on left: 42, on right: 15
+figura (80)
+    on left: 43 44 45, on right: 42
+setup (81)
+    on left: 46, on right: 42
+teardown (82)
+    on left: 47, on right: 42
+optlist (83)
+    on left: 48 49, on right: 15 42 49
+opt (84)
+    on left: 50 51 52 53, on right: 49
+scala (85)
+    on left: 54, on right: 50
+gira (86)
     on left: 55, on right: 51
-gira (87)
+colora (87)
     on left: 56, on right: 52
-colora (88)
-    on left: 57, on right: 53
-colore (89)
-    on left: 58 59 60 61, on right: 57
-rgbcode (90)
-    on left: 62, on right: 61
-luogo (91)
-    on left: 63, on right: 54
-trailer (92)
-    on left: 64, on right: 1
+colore (88)
+    on left: 57 58 59 60, on right: 56
+rgbcode (89)
+    on left: 61, on right: 60
+luogo (90)
+    on left: 62, on right: 53
+trailer (91)
+    on left: 63, on right: 1
 
 
 State 0
@@ -307,16 +302,16 @@ State 5
     5 stmlist: stmlist . stmt
 
     ID     shift, and go to state 6
-    VAR    shift, and go to state 7
-    IF     shift, and go to state 8
-    WHILE  shift, and go to state 9
+    IF     shift, and go to state 7
+    WHILE  shift, and go to state 8
+    VAR    shift, and go to state 9
     '{'    shift, and go to state 10
 
-    $end      reduce using rule 64 (trailer)
-    $default  reduce using rule 15 ($@5)
+    $end      reduce using rule 63 (trailer)
+    $default  reduce using rule 48 (optlist)
 
     stmt     go to state 11
-    $@5      go to state 12
+    optlist  go to state 12
     trailer  go to state 13
 
 
@@ -329,40 +324,40 @@ State 6
 
 State 7
 
-    9 stmt: VAR . ID ';'
+   11 stmt: IF . bool THEN $@3 stmt
 
-    ID  shift, and go to state 15
+    OPEN     shift, and go to state 15
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '!'      shift, and go to state 19
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    bool         go to state 22
+    boolpraefix  go to state 23
+    boolatomic   go to state 24
+    expr         go to state 25
+    product      go to state 26
+    exponent     go to state 27
+    praefix      go to state 28
+    atomic       go to state 29
 
 
 State 8
-
-   11 stmt: IF . bool THEN $@3 stmt
-
-    OPEN     shift, and go to state 16
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '!'      shift, and go to state 20
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    bool         go to state 23
-    boolpraefix  go to state 24
-    boolatomic   go to state 25
-    expr         go to state 26
-    product      go to state 27
-    exponent     go to state 28
-    praefix      go to state 29
-    atomic       go to state 30
-
-
-State 9
 
     8 stmt: WHILE . $@1 OPEN bool CLOSE $@2 stmt
 
     $default  reduce using rule 6 ($@1)
 
-    $@1  go to state 31
+    $@1  go to state 30
+
+
+State 9
+
+    9 stmt: VAR . ID ';'
+
+    ID  shift, and go to state 31
 
 
 State 10
@@ -383,11 +378,21 @@ State 11
 
 State 12
 
-   16 stmt: $@5 . optlist klecks
+   15 stmt: optlist . klecks
+   49 optlist: optlist . opt
 
-    $default  reduce using rule 49 (optlist)
+    DUEPUNTI  shift, and go to state 33
 
-    optlist  go to state 33
+    DUEPUNTI  [reduce using rule 46 (setup)]
+    $default  reduce using rule 46 (setup)
+
+    klecks  go to state 34
+    setup   go to state 35
+    opt     go to state 36
+    scala   go to state 37
+    gira    go to state 38
+    colora  go to state 39
+    luogo   go to state 40
 
 
 State 13
@@ -401,199 +406,199 @@ State 14
 
    14 stmt: ID '=' . expr SEMICOLON
 
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
 
-    expr      go to state 35
-    product   go to state 27
-    exponent  go to state 28
-    praefix   go to state 29
-    atomic    go to state 30
+    expr      go to state 42
+    product   go to state 26
+    exponent  go to state 27
+    praefix   go to state 28
+    atomic    go to state 29
 
 
 State 15
 
-    9 stmt: VAR ID . ';'
+   26 boolatomic: OPEN . bool CLOSE
+   41 atomic: OPEN . expr CLOSE
 
-    ';'  shift, and go to state 36
+    OPEN     shift, and go to state 15
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '!'      shift, and go to state 19
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    bool         go to state 43
+    boolpraefix  go to state 23
+    boolatomic   go to state 24
+    expr         go to state 44
+    product      go to state 26
+    exponent     go to state 27
+    praefix      go to state 28
+    atomic       go to state 29
 
 
 State 16
 
-   27 boolatomic: OPEN . bool CLOSE
-   42 atomic: OPEN . expr CLOSE
+   38 atomic: INTEGER .
 
-    OPEN     shift, and go to state 16
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '!'      shift, and go to state 20
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    bool         go to state 37
-    boolpraefix  go to state 24
-    boolatomic   go to state 25
-    expr         go to state 38
-    product      go to state 27
-    exponent     go to state 28
-    praefix      go to state 29
-    atomic       go to state 30
+    $default  reduce using rule 38 (atomic)
 
 
 State 17
 
-   39 atomic: INTEGER .
+   39 atomic: DOUBLE .
 
     $default  reduce using rule 39 (atomic)
 
 
 State 18
 
-   40 atomic: DOUBLE .
+   40 atomic: ID .
 
     $default  reduce using rule 40 (atomic)
 
 
 State 19
 
-   41 atomic: ID .
+   20 boolpraefix: '!' . boolatomic
 
-    $default  reduce using rule 41 (atomic)
+    OPEN     shift, and go to state 15
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    boolatomic  go to state 45
+    expr        go to state 25
+    product     go to state 26
+    exponent    go to state 27
+    praefix     go to state 28
+    atomic      go to state 29
 
 
 State 20
 
-   21 boolpraefix: '!' . boolatomic
+   36 praefix: '+' . atomic
 
-    OPEN     shift, and go to state 16
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
 
-    boolatomic  go to state 39
-    expr        go to state 26
-    product     go to state 27
-    exponent    go to state 28
-    praefix     go to state 29
-    atomic      go to state 30
+    atomic  go to state 46
 
 
 State 21
 
-   37 praefix: '+' . atomic
+   37 praefix: '-' . atomic
 
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
 
-    atomic  go to state 40
+    atomic  go to state 47
 
 
 State 22
 
-   38 praefix: '-' . atomic
+   11 stmt: IF bool . THEN $@3 stmt
+   17 bool: bool . '&' boolpraefix
+   18     | bool . '|' boolpraefix
 
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-
-    atomic  go to state 41
+    THEN  shift, and go to state 48
+    '|'   shift, and go to state 49
+    '&'   shift, and go to state 50
 
 
 State 23
 
-   11 stmt: IF bool . THEN $@3 stmt
-   18 bool: bool . '&' boolpraefix
-   19     | bool . '|' boolpraefix
+   16 bool: boolpraefix .
 
-    THEN  shift, and go to state 42
-    '|'   shift, and go to state 43
-    '&'   shift, and go to state 44
+    $default  reduce using rule 16 (bool)
 
 
 State 24
 
-   17 bool: boolpraefix .
+   19 boolpraefix: boolatomic .
 
-    $default  reduce using rule 17 (bool)
+    $default  reduce using rule 19 (boolpraefix)
 
 
 State 25
 
-   20 boolpraefix: boolatomic .
+   21 boolatomic: expr . '<' expr
+   22           | expr . LESSSAME expr
+   23           | expr . '>' expr
+   24           | expr . GREATERSAME expr
+   25           | expr . SAME expr
+   28 expr: expr . '+' product
+   29     | expr . '-' product
 
-    $default  reduce using rule 20 (boolpraefix)
+    SAME         shift, and go to state 51
+    LESSSAME     shift, and go to state 52
+    GREATERSAME  shift, and go to state 53
+    '<'          shift, and go to state 54
+    '>'          shift, and go to state 55
+    '+'          shift, and go to state 56
+    '-'          shift, and go to state 57
 
 
 State 26
 
-   22 boolatomic: expr . '<' expr
-   23           | expr . LESSSAME expr
-   24           | expr . '>' expr
-   25           | expr . GREATERSAME expr
-   26           | expr . SAME expr
-   29 expr: expr . '+' product
-   30     | expr . '-' product
+   27 expr: product .
+   31 product: product . '*' exponent
+   32        | product . '/' exponent
 
-    SAME         shift, and go to state 45
-    LESSSAME     shift, and go to state 46
-    GREATERSAME  shift, and go to state 47
-    '<'          shift, and go to state 48
-    '>'          shift, and go to state 49
-    '+'          shift, and go to state 50
-    '-'          shift, and go to state 51
+    '*'  shift, and go to state 58
+    '/'  shift, and go to state 59
+
+    $default  reduce using rule 27 (expr)
 
 
 State 27
 
-   28 expr: product .
-   32 product: product . '*' exponent
-   33        | product . '/' exponent
+   30 product: exponent .
 
-    '*'  shift, and go to state 52
-    '/'  shift, and go to state 53
-
-    $default  reduce using rule 28 (expr)
+    $default  reduce using rule 30 (product)
 
 
 State 28
 
-   31 product: exponent .
+   33 exponent: praefix .
+   34         | praefix . '^' exponent
 
-    $default  reduce using rule 31 (product)
+    '^'  shift, and go to state 60
+
+    $default  reduce using rule 33 (exponent)
 
 
 State 29
 
-   34 exponent: praefix .
-   35         | praefix . '^' exponent
+   35 praefix: atomic .
 
-    '^'  shift, and go to state 54
-
-    $default  reduce using rule 34 (exponent)
+    $default  reduce using rule 35 (praefix)
 
 
 State 30
 
-   36 praefix: atomic .
+    8 stmt: WHILE $@1 . OPEN bool CLOSE $@2 stmt
 
-    $default  reduce using rule 36 (praefix)
+    OPEN  shift, and go to state 61
 
 
 State 31
 
-    8 stmt: WHILE $@1 . OPEN bool CLOSE $@2 stmt
+    9 stmt: VAR ID . ';'
 
-    OPEN  shift, and go to state 55
+    ';'  shift, and go to state 62
 
 
 State 32
@@ -602,903 +607,884 @@ State 32
 
     $default  reduce using rule 4 (stmlist)
 
-    stmlist  go to state 56
+    stmlist  go to state 63
 
 
 State 33
 
-   16 stmt: $@5 optlist . klecks
-   50 optlist: optlist . opt
+   54 scala: DUEPUNTI . expr QUADDROPUNTI SCALA
+   55 gira: DUEPUNTI . expr QUADDROPUNTI GIRA
+   56 colora: DUEPUNTI . colore QUADDROPUNTI COLORA
+   62 luogo: DUEPUNTI . expr DUEPUNTI expr QUADDROPUNTI LUOGO
 
-    DUEPUNTI  shift, and go to state 57
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    ROSSO    shift, and go to state 64
+    VERDE    shift, and go to state 65
+    AZZURO   shift, and go to state 66
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
 
-    DUEPUNTI  [reduce using rule 47 (setup)]
-    $default  reduce using rule 47 (setup)
-
-    klecks  go to state 58
-    setup   go to state 59
-    opt     go to state 60
-    scala   go to state 61
-    gira    go to state 62
-    colora  go to state 63
-    luogo   go to state 64
+    expr      go to state 67
+    product   go to state 26
+    exponent  go to state 27
+    praefix   go to state 28
+    atomic    go to state 29
+    colore    go to state 68
+    rgbcode   go to state 69
 
 
 State 34
 
-   42 atomic: OPEN . expr CLOSE
+   15 stmt: optlist klecks .
 
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    expr      go to state 65
-    product   go to state 27
-    exponent  go to state 28
-    praefix   go to state 29
-    atomic    go to state 30
+    $default  reduce using rule 15 (stmt)
 
 
 State 35
 
-   14 stmt: ID '=' expr . SEMICOLON
-   29 expr: expr . '+' product
-   30     | expr . '-' product
+   42 klecks: setup . optlist figura teardown
 
-    SEMICOLON  shift, and go to state 66
-    '+'        shift, and go to state 50
-    '-'        shift, and go to state 51
+    $default  reduce using rule 48 (optlist)
+
+    optlist  go to state 70
 
 
 State 36
+
+   49 optlist: optlist opt .
+
+    $default  reduce using rule 49 (optlist)
+
+
+State 37
+
+   50 opt: scala .
+
+    $default  reduce using rule 50 (opt)
+
+
+State 38
+
+   51 opt: gira .
+
+    $default  reduce using rule 51 (opt)
+
+
+State 39
+
+   52 opt: colora .
+
+    $default  reduce using rule 52 (opt)
+
+
+State 40
+
+   53 opt: luogo .
+
+    $default  reduce using rule 53 (opt)
+
+
+State 41
+
+   41 atomic: OPEN . expr CLOSE
+
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    expr      go to state 71
+    product   go to state 26
+    exponent  go to state 27
+    praefix   go to state 28
+    atomic    go to state 29
+
+
+State 42
+
+   14 stmt: ID '=' expr . SEMICOLON
+   28 expr: expr . '+' product
+   29     | expr . '-' product
+
+    SEMICOLON  shift, and go to state 72
+    '+'        shift, and go to state 56
+    '-'        shift, and go to state 57
+
+
+State 43
+
+   17 bool: bool . '&' boolpraefix
+   18     | bool . '|' boolpraefix
+   26 boolatomic: OPEN bool . CLOSE
+
+    CLOSE  shift, and go to state 73
+    '|'    shift, and go to state 49
+    '&'    shift, and go to state 50
+
+
+State 44
+
+   21 boolatomic: expr . '<' expr
+   22           | expr . LESSSAME expr
+   23           | expr . '>' expr
+   24           | expr . GREATERSAME expr
+   25           | expr . SAME expr
+   28 expr: expr . '+' product
+   29     | expr . '-' product
+   41 atomic: OPEN expr . CLOSE
+
+    CLOSE        shift, and go to state 74
+    SAME         shift, and go to state 51
+    LESSSAME     shift, and go to state 52
+    GREATERSAME  shift, and go to state 53
+    '<'          shift, and go to state 54
+    '>'          shift, and go to state 55
+    '+'          shift, and go to state 56
+    '-'          shift, and go to state 57
+
+
+State 45
+
+   20 boolpraefix: '!' boolatomic .
+
+    $default  reduce using rule 20 (boolpraefix)
+
+
+State 46
+
+   36 praefix: '+' atomic .
+
+    $default  reduce using rule 36 (praefix)
+
+
+State 47
+
+   37 praefix: '-' atomic .
+
+    $default  reduce using rule 37 (praefix)
+
+
+State 48
+
+   11 stmt: IF bool THEN . $@3 stmt
+
+    $default  reduce using rule 10 ($@3)
+
+    $@3  go to state 75
+
+
+State 49
+
+   18 bool: bool '|' . boolpraefix
+
+    OPEN     shift, and go to state 15
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '!'      shift, and go to state 19
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    boolpraefix  go to state 76
+    boolatomic   go to state 24
+    expr         go to state 25
+    product      go to state 26
+    exponent     go to state 27
+    praefix      go to state 28
+    atomic       go to state 29
+
+
+State 50
+
+   17 bool: bool '&' . boolpraefix
+
+    OPEN     shift, and go to state 15
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '!'      shift, and go to state 19
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    boolpraefix  go to state 77
+    boolatomic   go to state 24
+    expr         go to state 25
+    product      go to state 26
+    exponent     go to state 27
+    praefix      go to state 28
+    atomic       go to state 29
+
+
+State 51
+
+   25 boolatomic: expr SAME . expr
+
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    expr      go to state 78
+    product   go to state 26
+    exponent  go to state 27
+    praefix   go to state 28
+    atomic    go to state 29
+
+
+State 52
+
+   22 boolatomic: expr LESSSAME . expr
+
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    expr      go to state 79
+    product   go to state 26
+    exponent  go to state 27
+    praefix   go to state 28
+    atomic    go to state 29
+
+
+State 53
+
+   24 boolatomic: expr GREATERSAME . expr
+
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    expr      go to state 80
+    product   go to state 26
+    exponent  go to state 27
+    praefix   go to state 28
+    atomic    go to state 29
+
+
+State 54
+
+   21 boolatomic: expr '<' . expr
+
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    expr      go to state 81
+    product   go to state 26
+    exponent  go to state 27
+    praefix   go to state 28
+    atomic    go to state 29
+
+
+State 55
+
+   23 boolatomic: expr '>' . expr
+
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    expr      go to state 82
+    product   go to state 26
+    exponent  go to state 27
+    praefix   go to state 28
+    atomic    go to state 29
+
+
+State 56
+
+   28 expr: expr '+' . product
+
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    product   go to state 83
+    exponent  go to state 27
+    praefix   go to state 28
+    atomic    go to state 29
+
+
+State 57
+
+   29 expr: expr '-' . product
+
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    product   go to state 84
+    exponent  go to state 27
+    praefix   go to state 28
+    atomic    go to state 29
+
+
+State 58
+
+   31 product: product '*' . exponent
+
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    exponent  go to state 85
+    praefix   go to state 28
+    atomic    go to state 29
+
+
+State 59
+
+   32 product: product '/' . exponent
+
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    exponent  go to state 86
+    praefix   go to state 28
+    atomic    go to state 29
+
+
+State 60
+
+   34 exponent: praefix '^' . exponent
+
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    exponent  go to state 87
+    praefix   go to state 28
+    atomic    go to state 29
+
+
+State 61
+
+    8 stmt: WHILE $@1 OPEN . bool CLOSE $@2 stmt
+
+    OPEN     shift, and go to state 15
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '!'      shift, and go to state 19
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    bool         go to state 88
+    boolpraefix  go to state 23
+    boolatomic   go to state 24
+    expr         go to state 25
+    product      go to state 26
+    exponent     go to state 27
+    praefix      go to state 28
+    atomic       go to state 29
+
+
+State 62
 
     9 stmt: VAR ID ';' .
 
     $default  reduce using rule 9 (stmt)
 
 
-State 37
-
-   18 bool: bool . '&' boolpraefix
-   19     | bool . '|' boolpraefix
-   27 boolatomic: OPEN bool . CLOSE
-
-    CLOSE  shift, and go to state 67
-    '|'    shift, and go to state 43
-    '&'    shift, and go to state 44
-
-
-State 38
-
-   22 boolatomic: expr . '<' expr
-   23           | expr . LESSSAME expr
-   24           | expr . '>' expr
-   25           | expr . GREATERSAME expr
-   26           | expr . SAME expr
-   29 expr: expr . '+' product
-   30     | expr . '-' product
-   42 atomic: OPEN expr . CLOSE
-
-    CLOSE        shift, and go to state 68
-    SAME         shift, and go to state 45
-    LESSSAME     shift, and go to state 46
-    GREATERSAME  shift, and go to state 47
-    '<'          shift, and go to state 48
-    '>'          shift, and go to state 49
-    '+'          shift, and go to state 50
-    '-'          shift, and go to state 51
-
-
-State 39
-
-   21 boolpraefix: '!' boolatomic .
-
-    $default  reduce using rule 21 (boolpraefix)
-
-
-State 40
-
-   37 praefix: '+' atomic .
-
-    $default  reduce using rule 37 (praefix)
-
-
-State 41
-
-   38 praefix: '-' atomic .
-
-    $default  reduce using rule 38 (praefix)
-
-
-State 42
-
-   11 stmt: IF bool THEN . $@3 stmt
-
-    $default  reduce using rule 10 ($@3)
-
-    $@3  go to state 69
-
-
-State 43
-
-   19 bool: bool '|' . boolpraefix
-
-    OPEN     shift, and go to state 16
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '!'      shift, and go to state 20
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    boolpraefix  go to state 70
-    boolatomic   go to state 25
-    expr         go to state 26
-    product      go to state 27
-    exponent     go to state 28
-    praefix      go to state 29
-    atomic       go to state 30
-
-
-State 44
-
-   18 bool: bool '&' . boolpraefix
-
-    OPEN     shift, and go to state 16
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '!'      shift, and go to state 20
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    boolpraefix  go to state 71
-    boolatomic   go to state 25
-    expr         go to state 26
-    product      go to state 27
-    exponent     go to state 28
-    praefix      go to state 29
-    atomic       go to state 30
-
-
-State 45
-
-   26 boolatomic: expr SAME . expr
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    expr      go to state 72
-    product   go to state 27
-    exponent  go to state 28
-    praefix   go to state 29
-    atomic    go to state 30
-
-
-State 46
-
-   23 boolatomic: expr LESSSAME . expr
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    expr      go to state 73
-    product   go to state 27
-    exponent  go to state 28
-    praefix   go to state 29
-    atomic    go to state 30
-
-
-State 47
-
-   25 boolatomic: expr GREATERSAME . expr
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    expr      go to state 74
-    product   go to state 27
-    exponent  go to state 28
-    praefix   go to state 29
-    atomic    go to state 30
-
-
-State 48
-
-   22 boolatomic: expr '<' . expr
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    expr      go to state 75
-    product   go to state 27
-    exponent  go to state 28
-    praefix   go to state 29
-    atomic    go to state 30
-
-
-State 49
-
-   24 boolatomic: expr '>' . expr
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    expr      go to state 76
-    product   go to state 27
-    exponent  go to state 28
-    praefix   go to state 29
-    atomic    go to state 30
-
-
-State 50
-
-   29 expr: expr '+' . product
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    product   go to state 77
-    exponent  go to state 28
-    praefix   go to state 29
-    atomic    go to state 30
-
-
-State 51
-
-   30 expr: expr '-' . product
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    product   go to state 78
-    exponent  go to state 28
-    praefix   go to state 29
-    atomic    go to state 30
-
-
-State 52
-
-   32 product: product '*' . exponent
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    exponent  go to state 79
-    praefix   go to state 29
-    atomic    go to state 30
-
-
-State 53
-
-   33 product: product '/' . exponent
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    exponent  go to state 80
-    praefix   go to state 29
-    atomic    go to state 30
-
-
-State 54
-
-   35 exponent: praefix '^' . exponent
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    exponent  go to state 81
-    praefix   go to state 29
-    atomic    go to state 30
-
-
-State 55
-
-    8 stmt: WHILE $@1 OPEN . bool CLOSE $@2 stmt
-
-    OPEN     shift, and go to state 16
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '!'      shift, and go to state 20
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    bool         go to state 82
-    boolpraefix  go to state 24
-    boolatomic   go to state 25
-    expr         go to state 26
-    product      go to state 27
-    exponent     go to state 28
-    praefix      go to state 29
-    atomic       go to state 30
-
-
-State 56
+State 63
 
     5 stmlist: stmlist . stmt
    13 stmt: '{' $@4 stmlist . '}'
 
     ID     shift, and go to state 6
-    VAR    shift, and go to state 7
-    IF     shift, and go to state 8
-    WHILE  shift, and go to state 9
+    IF     shift, and go to state 7
+    WHILE  shift, and go to state 8
+    VAR    shift, and go to state 9
     '{'    shift, and go to state 10
-    '}'    shift, and go to state 83
+    '}'    shift, and go to state 89
 
-    $default  reduce using rule 15 ($@5)
+    $default  reduce using rule 48 (optlist)
 
-    stmt  go to state 11
-    $@5   go to state 12
-
-
-State 57
-
-   55 scala: DUEPUNTI . expr QUADDROPUNTI SCALA
-   56 gira: DUEPUNTI . expr QUADDROPUNTI GIRA
-   57 colora: DUEPUNTI . colore QUADDROPUNTI COLORA
-   63 luogo: DUEPUNTI . expr DUEPUNTI expr QUADDROPUNTI LUOGO
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    ROSSO    shift, and go to state 84
-    VERDE    shift, and go to state 85
-    AZZURO   shift, and go to state 86
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    expr      go to state 87
-    product   go to state 27
-    exponent  go to state 28
-    praefix   go to state 29
-    atomic    go to state 30
-    colore    go to state 88
-    rgbcode   go to state 89
-
-
-State 58
-
-   16 stmt: $@5 optlist klecks .
-
-    $default  reduce using rule 16 (stmt)
-
-
-State 59
-
-   43 klecks: setup . optlist figura teardown
-
-    $default  reduce using rule 49 (optlist)
-
-    optlist  go to state 90
-
-
-State 60
-
-   50 optlist: optlist opt .
-
-    $default  reduce using rule 50 (optlist)
-
-
-State 61
-
-   51 opt: scala .
-
-    $default  reduce using rule 51 (opt)
-
-
-State 62
-
-   52 opt: gira .
-
-    $default  reduce using rule 52 (opt)
-
-
-State 63
-
-   53 opt: colora .
-
-    $default  reduce using rule 53 (opt)
+    stmt     go to state 11
+    optlist  go to state 12
 
 
 State 64
 
-   54 opt: luogo .
+   57 colore: ROSSO .
 
-    $default  reduce using rule 54 (opt)
+    $default  reduce using rule 57 (colore)
 
 
 State 65
 
-   29 expr: expr . '+' product
-   30     | expr . '-' product
-   42 atomic: OPEN expr . CLOSE
+   58 colore: VERDE .
 
-    CLOSE  shift, and go to state 68
-    '+'    shift, and go to state 50
-    '-'    shift, and go to state 51
+    $default  reduce using rule 58 (colore)
 
 
 State 66
+
+   59 colore: AZZURO .
+
+    $default  reduce using rule 59 (colore)
+
+
+State 67
+
+   28 expr: expr . '+' product
+   29     | expr . '-' product
+   54 scala: DUEPUNTI expr . QUADDROPUNTI SCALA
+   55 gira: DUEPUNTI expr . QUADDROPUNTI GIRA
+   61 rgbcode: expr . DUEPUNTI expr DUEPUNTI expr
+   62 luogo: DUEPUNTI expr . DUEPUNTI expr QUADDROPUNTI LUOGO
+
+    DUEPUNTI      shift, and go to state 90
+    QUADDROPUNTI  shift, and go to state 91
+    '+'           shift, and go to state 56
+    '-'           shift, and go to state 57
+
+
+State 68
+
+   56 colora: DUEPUNTI colore . QUADDROPUNTI COLORA
+
+    QUADDROPUNTI  shift, and go to state 92
+
+
+State 69
+
+   60 colore: rgbcode .
+
+    $default  reduce using rule 60 (colore)
+
+
+State 70
+
+   42 klecks: setup optlist . figura teardown
+   49 optlist: optlist . opt
+
+    DUEPUNTI  shift, and go to state 33
+    SEIPUNTI  shift, and go to state 93
+
+    figura  go to state 94
+    opt     go to state 36
+    scala   go to state 37
+    gira    go to state 38
+    colora  go to state 39
+    luogo   go to state 40
+
+
+State 71
+
+   28 expr: expr . '+' product
+   29     | expr . '-' product
+   41 atomic: OPEN expr . CLOSE
+
+    CLOSE  shift, and go to state 74
+    '+'    shift, and go to state 56
+    '-'    shift, and go to state 57
+
+
+State 72
 
    14 stmt: ID '=' expr SEMICOLON .
 
     $default  reduce using rule 14 (stmt)
 
 
-State 67
+State 73
 
-   27 boolatomic: OPEN bool CLOSE .
-
-    $default  reduce using rule 27 (boolatomic)
-
-
-State 68
-
-   42 atomic: OPEN expr CLOSE .
-
-    $default  reduce using rule 42 (atomic)
-
-
-State 69
-
-   11 stmt: IF bool THEN $@3 . stmt
-
-    ID     shift, and go to state 6
-    VAR    shift, and go to state 7
-    IF     shift, and go to state 8
-    WHILE  shift, and go to state 9
-    '{'    shift, and go to state 10
-
-    $default  reduce using rule 15 ($@5)
-
-    stmt  go to state 91
-    $@5   go to state 12
-
-
-State 70
-
-   19 bool: bool '|' boolpraefix .
-
-    $default  reduce using rule 19 (bool)
-
-
-State 71
-
-   18 bool: bool '&' boolpraefix .
-
-    $default  reduce using rule 18 (bool)
-
-
-State 72
-
-   26 boolatomic: expr SAME expr .
-   29 expr: expr . '+' product
-   30     | expr . '-' product
-
-    '+'  shift, and go to state 50
-    '-'  shift, and go to state 51
+   26 boolatomic: OPEN bool CLOSE .
 
     $default  reduce using rule 26 (boolatomic)
 
 
-State 73
-
-   23 boolatomic: expr LESSSAME expr .
-   29 expr: expr . '+' product
-   30     | expr . '-' product
-
-    '+'  shift, and go to state 50
-    '-'  shift, and go to state 51
-
-    $default  reduce using rule 23 (boolatomic)
-
-
 State 74
 
-   25 boolatomic: expr GREATERSAME expr .
-   29 expr: expr . '+' product
-   30     | expr . '-' product
+   41 atomic: OPEN expr CLOSE .
 
-    '+'  shift, and go to state 50
-    '-'  shift, and go to state 51
-
-    $default  reduce using rule 25 (boolatomic)
+    $default  reduce using rule 41 (atomic)
 
 
 State 75
 
-   22 boolatomic: expr '<' expr .
-   29 expr: expr . '+' product
-   30     | expr . '-' product
+   11 stmt: IF bool THEN $@3 . stmt
 
-    '+'  shift, and go to state 50
-    '-'  shift, and go to state 51
+    ID     shift, and go to state 6
+    IF     shift, and go to state 7
+    WHILE  shift, and go to state 8
+    VAR    shift, and go to state 9
+    '{'    shift, and go to state 10
 
-    $default  reduce using rule 22 (boolatomic)
+    $default  reduce using rule 48 (optlist)
+
+    stmt     go to state 95
+    optlist  go to state 12
 
 
 State 76
 
-   24 boolatomic: expr '>' expr .
-   29 expr: expr . '+' product
-   30     | expr . '-' product
+   18 bool: bool '|' boolpraefix .
 
-    '+'  shift, and go to state 50
-    '-'  shift, and go to state 51
-
-    $default  reduce using rule 24 (boolatomic)
+    $default  reduce using rule 18 (bool)
 
 
 State 77
 
-   29 expr: expr '+' product .
-   32 product: product . '*' exponent
-   33        | product . '/' exponent
+   17 bool: bool '&' boolpraefix .
 
-    '*'  shift, and go to state 52
-    '/'  shift, and go to state 53
-
-    $default  reduce using rule 29 (expr)
+    $default  reduce using rule 17 (bool)
 
 
 State 78
 
-   30 expr: expr '-' product .
-   32 product: product . '*' exponent
-   33        | product . '/' exponent
+   25 boolatomic: expr SAME expr .
+   28 expr: expr . '+' product
+   29     | expr . '-' product
 
-    '*'  shift, and go to state 52
-    '/'  shift, and go to state 53
+    '+'  shift, and go to state 56
+    '-'  shift, and go to state 57
 
-    $default  reduce using rule 30 (expr)
+    $default  reduce using rule 25 (boolatomic)
 
 
 State 79
 
-   32 product: product '*' exponent .
+   22 boolatomic: expr LESSSAME expr .
+   28 expr: expr . '+' product
+   29     | expr . '-' product
 
-    $default  reduce using rule 32 (product)
+    '+'  shift, and go to state 56
+    '-'  shift, and go to state 57
+
+    $default  reduce using rule 22 (boolatomic)
 
 
 State 80
 
-   33 product: product '/' exponent .
+   24 boolatomic: expr GREATERSAME expr .
+   28 expr: expr . '+' product
+   29     | expr . '-' product
 
-    $default  reduce using rule 33 (product)
+    '+'  shift, and go to state 56
+    '-'  shift, and go to state 57
+
+    $default  reduce using rule 24 (boolatomic)
 
 
 State 81
 
-   35 exponent: praefix '^' exponent .
+   21 boolatomic: expr '<' expr .
+   28 expr: expr . '+' product
+   29     | expr . '-' product
 
-    $default  reduce using rule 35 (exponent)
+    '+'  shift, and go to state 56
+    '-'  shift, and go to state 57
+
+    $default  reduce using rule 21 (boolatomic)
 
 
 State 82
 
-    8 stmt: WHILE $@1 OPEN bool . CLOSE $@2 stmt
-   18 bool: bool . '&' boolpraefix
-   19     | bool . '|' boolpraefix
+   23 boolatomic: expr '>' expr .
+   28 expr: expr . '+' product
+   29     | expr . '-' product
 
-    CLOSE  shift, and go to state 92
-    '|'    shift, and go to state 43
-    '&'    shift, and go to state 44
+    '+'  shift, and go to state 56
+    '-'  shift, and go to state 57
+
+    $default  reduce using rule 23 (boolatomic)
 
 
 State 83
+
+   28 expr: expr '+' product .
+   31 product: product . '*' exponent
+   32        | product . '/' exponent
+
+    '*'  shift, and go to state 58
+    '/'  shift, and go to state 59
+
+    $default  reduce using rule 28 (expr)
+
+
+State 84
+
+   29 expr: expr '-' product .
+   31 product: product . '*' exponent
+   32        | product . '/' exponent
+
+    '*'  shift, and go to state 58
+    '/'  shift, and go to state 59
+
+    $default  reduce using rule 29 (expr)
+
+
+State 85
+
+   31 product: product '*' exponent .
+
+    $default  reduce using rule 31 (product)
+
+
+State 86
+
+   32 product: product '/' exponent .
+
+    $default  reduce using rule 32 (product)
+
+
+State 87
+
+   34 exponent: praefix '^' exponent .
+
+    $default  reduce using rule 34 (exponent)
+
+
+State 88
+
+    8 stmt: WHILE $@1 OPEN bool . CLOSE $@2 stmt
+   17 bool: bool . '&' boolpraefix
+   18     | bool . '|' boolpraefix
+
+    CLOSE  shift, and go to state 96
+    '|'    shift, and go to state 49
+    '&'    shift, and go to state 50
+
+
+State 89
 
    13 stmt: '{' $@4 stmlist '}' .
 
     $default  reduce using rule 13 (stmt)
 
 
-State 84
-
-   58 colore: ROSSO .
-
-    $default  reduce using rule 58 (colore)
-
-
-State 85
-
-   59 colore: VERDE .
-
-    $default  reduce using rule 59 (colore)
-
-
-State 86
-
-   60 colore: AZZURO .
-
-    $default  reduce using rule 60 (colore)
-
-
-State 87
-
-   29 expr: expr . '+' product
-   30     | expr . '-' product
-   55 scala: DUEPUNTI expr . QUADDROPUNTI SCALA
-   56 gira: DUEPUNTI expr . QUADDROPUNTI GIRA
-   62 rgbcode: expr . DUEPUNTI expr DUEPUNTI expr
-   63 luogo: DUEPUNTI expr . DUEPUNTI expr QUADDROPUNTI LUOGO
-
-    DUEPUNTI      shift, and go to state 93
-    QUADDROPUNTI  shift, and go to state 94
-    '+'           shift, and go to state 50
-    '-'           shift, and go to state 51
-
-
-State 88
-
-   57 colora: DUEPUNTI colore . QUADDROPUNTI COLORA
-
-    QUADDROPUNTI  shift, and go to state 95
-
-
-State 89
-
-   61 colore: rgbcode .
-
-    $default  reduce using rule 61 (colore)
-
-
 State 90
 
-   43 klecks: setup optlist . figura teardown
-   50 optlist: optlist . opt
+   61 rgbcode: expr DUEPUNTI . expr DUEPUNTI expr
+   62 luogo: DUEPUNTI expr DUEPUNTI . expr QUADDROPUNTI LUOGO
 
-    DUEPUNTI  shift, and go to state 57
-    SEIPUNTI  shift, and go to state 96
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
 
-    figura  go to state 97
-    opt     go to state 60
-    scala   go to state 61
-    gira    go to state 62
-    colora  go to state 63
-    luogo   go to state 64
+    expr      go to state 97
+    product   go to state 26
+    exponent  go to state 27
+    praefix   go to state 28
+    atomic    go to state 29
 
 
 State 91
+
+   54 scala: DUEPUNTI expr QUADDROPUNTI . SCALA
+   55 gira: DUEPUNTI expr QUADDROPUNTI . GIRA
+
+    SCALA  shift, and go to state 98
+    GIRA   shift, and go to state 99
+
+
+State 92
+
+   56 colora: DUEPUNTI colore QUADDROPUNTI . COLORA
+
+    COLORA  shift, and go to state 100
+
+
+State 93
+
+   43 figura: SEIPUNTI . PACMAN
+   44       | SEIPUNTI . CERCHIO
+   45       | SEIPUNTI . POLIGONO
+
+    CERCHIO   shift, and go to state 101
+    PACMAN    shift, and go to state 102
+    POLIGONO  shift, and go to state 103
+
+
+State 94
+
+   42 klecks: setup optlist figura . teardown
+
+    $default  reduce using rule 47 (teardown)
+
+    teardown  go to state 104
+
+
+State 95
 
    11 stmt: IF bool THEN $@3 stmt .
 
     $default  reduce using rule 11 (stmt)
 
 
-State 92
+State 96
 
     8 stmt: WHILE $@1 OPEN bool CLOSE . $@2 stmt
 
     $default  reduce using rule 7 ($@2)
 
-    $@2  go to state 98
-
-
-State 93
-
-   62 rgbcode: expr DUEPUNTI . expr DUEPUNTI expr
-   63 luogo: DUEPUNTI expr DUEPUNTI . expr QUADDROPUNTI LUOGO
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    expr      go to state 99
-    product   go to state 27
-    exponent  go to state 28
-    praefix   go to state 29
-    atomic    go to state 30
-
-
-State 94
-
-   55 scala: DUEPUNTI expr QUADDROPUNTI . SCALA
-   56 gira: DUEPUNTI expr QUADDROPUNTI . GIRA
-
-    SCALA  shift, and go to state 100
-    GIRA   shift, and go to state 101
-
-
-State 95
-
-   57 colora: DUEPUNTI colore QUADDROPUNTI . COLORA
-
-    COLORA  shift, and go to state 102
-
-
-State 96
-
-   44 figura: SEIPUNTI . PACMAN
-   45       | SEIPUNTI . CERCHIO
-   46       | SEIPUNTI . POLIGONO
-
-    CERCHIO   shift, and go to state 103
-    PACMAN    shift, and go to state 104
-    POLIGONO  shift, and go to state 105
+    $@2  go to state 105
 
 
 State 97
 
-   43 klecks: setup optlist figura . teardown
+   28 expr: expr . '+' product
+   29     | expr . '-' product
+   61 rgbcode: expr DUEPUNTI expr . DUEPUNTI expr
+   62 luogo: DUEPUNTI expr DUEPUNTI expr . QUADDROPUNTI LUOGO
 
-    $default  reduce using rule 48 (teardown)
-
-    teardown  go to state 106
+    DUEPUNTI      shift, and go to state 106
+    QUADDROPUNTI  shift, and go to state 107
+    '+'           shift, and go to state 56
+    '-'           shift, and go to state 57
 
 
 State 98
 
-    8 stmt: WHILE $@1 OPEN bool CLOSE $@2 . stmt
+   54 scala: DUEPUNTI expr QUADDROPUNTI SCALA .
 
-    ID     shift, and go to state 6
-    VAR    shift, and go to state 7
-    IF     shift, and go to state 8
-    WHILE  shift, and go to state 9
-    '{'    shift, and go to state 10
-
-    $default  reduce using rule 15 ($@5)
-
-    stmt  go to state 107
-    $@5   go to state 12
+    $default  reduce using rule 54 (scala)
 
 
 State 99
 
-   29 expr: expr . '+' product
-   30     | expr . '-' product
-   62 rgbcode: expr DUEPUNTI expr . DUEPUNTI expr
-   63 luogo: DUEPUNTI expr DUEPUNTI expr . QUADDROPUNTI LUOGO
+   55 gira: DUEPUNTI expr QUADDROPUNTI GIRA .
 
-    DUEPUNTI      shift, and go to state 108
-    QUADDROPUNTI  shift, and go to state 109
-    '+'           shift, and go to state 50
-    '-'           shift, and go to state 51
+    $default  reduce using rule 55 (gira)
 
 
 State 100
 
-   55 scala: DUEPUNTI expr QUADDROPUNTI SCALA .
+   56 colora: DUEPUNTI colore QUADDROPUNTI COLORA .
 
-    $default  reduce using rule 55 (scala)
+    $default  reduce using rule 56 (colora)
 
 
 State 101
 
-   56 gira: DUEPUNTI expr QUADDROPUNTI GIRA .
+   44 figura: SEIPUNTI CERCHIO .
 
-    $default  reduce using rule 56 (gira)
+    $default  reduce using rule 44 (figura)
 
 
 State 102
 
-   57 colora: DUEPUNTI colore QUADDROPUNTI COLORA .
+   43 figura: SEIPUNTI PACMAN .
 
-    $default  reduce using rule 57 (colora)
+    $default  reduce using rule 43 (figura)
 
 
 State 103
 
-   45 figura: SEIPUNTI CERCHIO .
+   45 figura: SEIPUNTI POLIGONO .
 
     $default  reduce using rule 45 (figura)
 
 
 State 104
 
-   44 figura: SEIPUNTI PACMAN .
+   42 klecks: setup optlist figura teardown .
 
-    $default  reduce using rule 44 (figura)
+    $default  reduce using rule 42 (klecks)
 
 
 State 105
 
-   46 figura: SEIPUNTI POLIGONO .
+    8 stmt: WHILE $@1 OPEN bool CLOSE $@2 . stmt
 
-    $default  reduce using rule 46 (figura)
+    ID     shift, and go to state 6
+    IF     shift, and go to state 7
+    WHILE  shift, and go to state 8
+    VAR    shift, and go to state 9
+    '{'    shift, and go to state 10
+
+    $default  reduce using rule 48 (optlist)
+
+    stmt     go to state 108
+    optlist  go to state 12
 
 
 State 106
 
-   43 klecks: setup optlist figura teardown .
+   61 rgbcode: expr DUEPUNTI expr DUEPUNTI . expr
 
-    $default  reduce using rule 43 (klecks)
+    OPEN     shift, and go to state 41
+    INTEGER  shift, and go to state 16
+    DOUBLE   shift, and go to state 17
+    ID       shift, and go to state 18
+    '+'      shift, and go to state 20
+    '-'      shift, and go to state 21
+
+    expr      go to state 109
+    product   go to state 26
+    exponent  go to state 27
+    praefix   go to state 28
+    atomic    go to state 29
 
 
 State 107
+
+   62 luogo: DUEPUNTI expr DUEPUNTI expr QUADDROPUNTI . LUOGO
+
+    LUOGO  shift, and go to state 110
+
+
+State 108
 
     8 stmt: WHILE $@1 OPEN bool CLOSE $@2 stmt .
 
     $default  reduce using rule 8 (stmt)
 
 
-State 108
-
-   62 rgbcode: expr DUEPUNTI expr DUEPUNTI . expr
-
-    OPEN     shift, and go to state 34
-    INTEGER  shift, and go to state 17
-    DOUBLE   shift, and go to state 18
-    ID       shift, and go to state 19
-    '+'      shift, and go to state 21
-    '-'      shift, and go to state 22
-
-    expr      go to state 110
-    product   go to state 27
-    exponent  go to state 28
-    praefix   go to state 29
-    atomic    go to state 30
-
-
 State 109
 
-   63 luogo: DUEPUNTI expr DUEPUNTI expr QUADDROPUNTI . LUOGO
+   28 expr: expr . '+' product
+   29     | expr . '-' product
+   61 rgbcode: expr DUEPUNTI expr DUEPUNTI expr .
 
-    LUOGO  shift, and go to state 111
+    '+'  shift, and go to state 56
+    '-'  shift, and go to state 57
+
+    $default  reduce using rule 61 (rgbcode)
 
 
 State 110
 
-   29 expr: expr . '+' product
-   30     | expr . '-' product
-   62 rgbcode: expr DUEPUNTI expr DUEPUNTI expr .
+   62 luogo: DUEPUNTI expr DUEPUNTI expr QUADDROPUNTI LUOGO .
 
-    '+'  shift, and go to state 50
-    '-'  shift, and go to state 51
-
-    $default  reduce using rule 62 (rgbcode)
-
-
-State 111
-
-   63 luogo: DUEPUNTI expr DUEPUNTI expr QUADDROPUNTI LUOGO .
-
-    $default  reduce using rule 63 (luogo)
+    $default  reduce using rule 62 (luogo)

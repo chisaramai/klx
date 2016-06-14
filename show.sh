@@ -1,3 +1,3 @@
 #!bin/bash
-makes
+make
 ghostscript due.ps

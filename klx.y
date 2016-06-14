@@ -27,15 +27,15 @@ void yyerror(const char *msg);
 %token <n> ID
 %token COLORA SCALA GIRA LUOGO
 %token ROSSO VERDE AZZURO GIALLO
-%token DOLLAR SNAKE HASH VAR
+%token DOLLAR SNAKE HASH
 %token IF THEN WHILE
 %token FOREACH FOR
+%token VAR
 
 
 %left '|' '&' '!'
 
 %define parse.error verbose
-
 
 %%
 
@@ -58,16 +58,56 @@ stmlist:;
 stmlist:stmlist stmt;	
 
 
-stmt: 	WHILE {printf("{\n");} 
-		OPEN bool CLOSE { printf(" not {exit} if\n");}
-		stmt {printf("} loop\n");};
-stmt :VAR ID ';'{$2-> declared=1; printf("/klx%s 0 def \n , $2 -> symbol");};
-stmt: IF bool THEN 	{printf("{\n");} stmt { printf("}if\n"); };
-stmt: '{' {scope_open();printf("4 dict begin\n"); } stmlist '}' {scope_close(); printf("end\n");};
+stmt: 	WHILE 
+{ 
+	printf("{\n"); 
+} 
+	OPEN bool CLOSE 
+{ 
+	printf(" not {exit} if\n"); 
+}
+	stmt 
+{ 
+	printf("} loop\n"); 
+}
+;
+stmt:	VAR ID ';'
+{ 	
+	$2 -> declared = 1; 
+	printf("/klx%s 0 def \n , $2 -> symbol"); 
+}
+;
+stmt: 	IF bool THEN 
+{ 
+	printf("{\n"); 
+} 	
+	stmt 
+{ 	
+	printf("} if\n"); 
+}
+;
+stmt: 	'{' 
+{ 
+	scope_open(); 
+	printf("4 dict begin\n"); 
+} 
+	stmlist 
+	'}' 
+{ 
+	scope_close(); 
+	printf("end\n"); 
+}
+;
 
-stmt: ID '=' expr SEMICOLON {if(!$1 -> declared) yyerror("Undeclared variable!");  printf("/klx%s exch def\n",$1->symbol);};
+stmt: 	ID '=' expr SEMICOLON 
+{ 
+	if(!$1 -> declared) 
+		yyerror("Undeclared variable!");  
+	printf("/klx%s exch def\n",$1 -> symbol);
+}
+;
 
-stmt: {printf("gsave\n");} optlist klecks {printf("grestore\n");};
+stmt: optlist klecks;
 
 //  BOOLEANS
 
@@ -88,8 +128,8 @@ boolatomic: OPEN bool CLOSE;
 // ARITHMETIC
 
 expr: product;
-expr: expr '+' product 			{ printf("add "); };
-expr: expr '-' product 			{ printf("sub "); };
+expr: expr '+' product 			{printf("add ");};
+expr: expr '-' product 			{printf("sub ");};
 
 product: exponent;
 product: product '*' exponent 		{printf("mul ");};
@@ -100,11 +140,29 @@ exponent: praefix '^' exponent 		{printf("exp \n");};
 
 praefix: atomic;
 praefix: '+' atomic;
-praefix: '-' atomic 			{printf("neg \n");};
+praefix: '-' atomic 			
+{	
+	printf("neg \n");	
+}
+;
 
-atomic: INTEGER 			{printf("%d ", $1); };
-atomic: DOUBLE 				{printf("%f ", $1);};
-atomic: ID 				{if(!$1) yyerror("Undeclared Variable!"); printf("klx%s ", $1 -> symbol);};
+atomic: INTEGER 			
+{	
+	printf("%d ", $1);	
+}
+;
+atomic: DOUBLE 				
+{	
+	printf("%f ", $1);	
+}
+;
+atomic: ID 
+{ 
+	if(!$1) yyerror("Undeclared Variable!"); 
+		printf("klx%s ", $1 -> symbol);
+}
+;
+
 atomic: OPEN expr CLOSE;
 
 
@@ -113,7 +171,7 @@ klecks: setup optlist figura teardown;
 
 figura: SEIPUNTI PACMAN 
 {
-	printf(" newpath 0 0 60 30 330 arc\n0 0 lineto\n");
+	printf("newpath 0 0 60 30 330 arc\n0 0 lineto\n");
 }
 ;
 
@@ -124,7 +182,8 @@ figura: SEIPUNTI CERCHIO
 ;
 
 figura: SEIPUNTI POLIGONO
-{	printf("newpath\n");
+{	
+	printf("newpath\n");
 	printf("/polygono {");
 	printf("4 dict begin \n");
 	printf("/N exch def /r exch def \n");
@@ -136,6 +195,7 @@ figura: SEIPUNTI POLIGONO
 	printf("polygono\n");
 }
 ;
+
 setup:
 {
 	printf("gsave\n");
@@ -163,6 +223,7 @@ scala:	DUEPUNTI expr QUADDROPUNTI SCALA
 	printf("scale ");
 }
 ;
+
 // .* GIRA
 gira:	DUEPUNTI expr QUADDROPUNTI GIRA
 {
@@ -186,7 +247,7 @@ colora:	DUEPUNTI colore QUADDROPUNTI COLORA
                 	;
                     
 		// .* RGBCODE
-		rgbcode:	expr DUEPUNTI expr DUEPUNTI expr
+		rgbcode:	expr DUEPUNTI expr DUEPUNTI expr;
 		
             
         
@@ -203,7 +264,7 @@ trailer:
 {
 	printf("\nshowpage\n"); 
 }
-;	
+;
         
 %%
 

@@ -83,12 +83,12 @@ extern int yydebug;
     DOLLAR = 293,
     SNAKE = 294,
     HASH = 295,
-    VAR = 296,
-    IF = 297,
-    THEN = 298,
-    WHILE = 299,
-    FOREACH = 300,
-    FOR = 301
+    IF = 296,
+    THEN = 297,
+    WHILE = 298,
+    FOREACH = 299,
+    FOR = 300,
+    VAR = 301
   };
 #endif
 
