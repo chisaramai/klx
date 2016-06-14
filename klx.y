@@ -57,6 +57,7 @@ setting:
 stmlist:;
 stmlist:stmlist stmt;	
 
+stmt: setup optlist klecks teardown;
 
 stmt: 	WHILE 
 { 
@@ -107,7 +108,6 @@ stmt: 	ID '=' expr SEMICOLON
 }
 ;
 
-stmt: optlist klecks;
 
 //  BOOLEANS
 
@@ -167,21 +167,19 @@ atomic: OPEN expr CLOSE;
 
 
 // .* KLECKS    
-klecks: setup optlist figura teardown;
-
-figura: SEIPUNTI PACMAN 
+klecks: SEIPUNTI PACMAN 
 {
 	printf("newpath 0 0 60 30 330 arc\n0 0 lineto\n");
 }
 ;
 
-figura: SEIPUNTI CERCHIO
+klecks: SEIPUNTI CERCHIO
 {
 	printf("newpath 0 0 60 0 360 arc\n0 0 lineto\n");
 }
 ;
 
-figura: SEIPUNTI POLIGONO
+klecks: SEIPUNTI POLIGONO
 {	
 	printf("newpath\n");
 	printf("/polygono {");
