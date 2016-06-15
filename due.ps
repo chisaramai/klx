@@ -1,16 +1,30 @@
 %!PS-Adobe
 .7 setgray
 300 400 translate
+/polygono {
+4 dict begin 
+/N exch def /r exch def 
+/A 360 N div def
+r 0 moveto
+N { A cos r mul A sin r mul lineto /A A 360 N div add def} repeat closepath
+end } def
 gsave
 100 200 neg 
 translate
-newpath 0 0 60 30 330 arc
+0.900000 0 0.400000  setrgbcolor
+90 90 add rotate newpath 0 0 60 30 330 arc
 0 0 lineto
 fill
 grestore
 gsave
 newpath 0 0 60 0 360 arc
 0 0 lineto
+fill
+grestore
+gsave
+150 neg 
+200 translate
+60 8 polygono
 fill
 grestore
 

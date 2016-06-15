@@ -41,7 +41,7 @@ void yyerror(const char *msg);
 
 // :GRAMMAR
 
-programma: header setting stmlist trailer;
+programma: header setting functions stmlist trailer;
 
 header: 
 	{
@@ -52,6 +52,18 @@ setting:
 {
 	printf(".7 setgray\n300 400 translate\n");
 };
+
+functions: 
+{
+    	printf("/polygono {\n");
+	printf("4 dict begin \n");
+	printf("/N exch def /r exch def \n");
+	printf("/A 360 N div def\n");
+	printf("r 0 moveto\n");
+	printf("N { A cos r mul A sin r mul lineto /A A 360 N div add def} repeat ");
+				printf("closepath\n"); 
+				printf("end } def\n");
+}
 
 // .* STMLIST
 stmlist:;
@@ -179,17 +191,9 @@ klecks: SEIPUNTI CERCHIO
 }
 ;
 
-klecks: SEIPUNTI POLIGONO
+klecks: DUEPUNTI expr DUEPUNTI expr SEIPUNTI POLIGONO
 {	
-	printf("newpath\n");
-	printf("/polygono {");
-	printf("4 dict begin \n");
-	printf("/N exch def /r exch def \n");
-	printf("/A 360 N div def");
-	printf("r 0 moveto\n");
-	printf("N { A cos r mul A sin r mul lineto /A A 360 N div add def} repeat ");
-				printf("closepath"); 
-				printf("end } def ");
+
 	printf("polygono\n");
 }
 ;
