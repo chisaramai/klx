@@ -11,7 +11,6 @@
 	var@green
 	var@blue
  	
-
  -380@x
  +200@y
   0@angle
@@ -25,23 +24,23 @@ var@i
 
     #7{
 	
-	if (i % 2 == 0) 
+	if ((i % 2) == 0) then
         
         {
             		:angle					::gira
-		:.6:.6				::scala
+		:.2:.2				::scala
 		:x:y			::positione
 		:verde	::colora
 		:::cerchio
             
         }
         
-        else 
+        if(!((i % 2) == 0)) then
         
         {
             
 		:angle					::gira
-		:.6:.6				::scala
+		:.5:.5				::scala
 		:x:y			::positione
 		:red:green:blue	::colora
 		:::pacman

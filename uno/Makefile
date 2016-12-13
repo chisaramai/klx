@@ -1,5 +1,5 @@
 
-all: klx due.ps
+all: klx uno.ps
 
 klx: lex.yy.c klx.tab.c klx.tab.h symtab.h symtab.c
 	gcc lex.yy.c klx.tab.c symtab.c -lfl -o klx
@@ -13,9 +13,9 @@ klx.tab.c: klx.y
 klx.tab.h: klx.y
 	bison -d- v -t klx.y
 	
-due.ps: klx due.klx
-	./klx < due.klx > due.ps
+uno.ps: klx uno.klx
+	./klx < uno.klx > uno.ps
 	
 clean:
-	rm -f due.ps klx.tab.* lex.yy.c klx
-	rm -f *.o due.ps lex.yy.c klx.tab.c klx.tab.h *.bak klx
+	rm -f uno.ps klx.tab.* lex.yy.c klx
+	rm -f *.o uno.ps lex.yy.c klx.tab.c klx.tab.h *.bak klx

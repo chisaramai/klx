@@ -61,23 +61,24 @@ extern int yydebug;
     LESSSAME = 271,
     BIGGERSAME = 272,
     SAME = 273,
-    INTEGER = 274,
-    DOUBLE = 275,
-    ID = 276,
-    COLORA = 277,
-    SCALA = 278,
-    GIRA = 279,
-    POSITIONE = 280,
-    ROSSO = 281,
-    VERDE = 282,
-    AZZURO = 283,
-    GIALLO = 284,
-    IF = 285,
-    THEN = 286,
-    WHILE = 287,
-    FOREACH = 288,
-    REPEAT = 289,
-    VAR = 290
+    ISNOT = 274,
+    INTEGER = 275,
+    DOUBLE = 276,
+    ID = 277,
+    COLORA = 278,
+    SCALA = 279,
+    GIRA = 280,
+    POSITIONE = 281,
+    ROSSO = 282,
+    VERDE = 283,
+    AZZURO = 284,
+    GIALLO = 285,
+    IF = 286,
+    THEN = 287,
+    WHILE = 288,
+    FOREACH = 289,
+    REPEAT = 290,
+    VAR = 291
   };
 #endif
 
@@ -92,7 +93,7 @@ union YYSTYPE
 	double d;
 	node *n;
 
-#line 96 "klx.tab.h" /* yacc.c:1909  */
+#line 97 "klx.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

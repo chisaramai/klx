@@ -47,37 +47,36 @@ extern int yydebug;
   {
     CERCHIO = 258,
     RETTANGOLO = 259,
-    TRIANGOLO = 260,
-    SETTORE = 261,
-    PACMAN = 262,
-    PENTAGONO = 263,
-    POLIGONO = 264,
-    QUADRATO = 265,
-    DUE = 266,
-    QUADDRO = 267,
-    SEI = 268,
-    OTTO = 269,
-    EOL = 270,
-    LESSSAME = 271,
-    BIGGERSAME = 272,
-    SAME = 273,
-    INTEGER = 274,
-    DOUBLE = 275,
-    ID = 276,
-    COLORA = 277,
-    SCALA = 278,
-    GIRA = 279,
-    POSITIONE = 280,
-    ROSSO = 281,
-    VERDE = 282,
-    AZZURO = 283,
-    GIALLO = 284,
-    IF = 285,
-    THEN = 286,
-    WHILE = 287,
-    FOREACH = 288,
-    REPEAT = 289,
-    VAR = 290
+    SETTORE = 260,
+    PACMAN = 261,
+    POLIGONO = 262,
+    DUE = 263,
+    QUADDRO = 264,
+    SEI = 265,
+    OTTO = 266,
+    EOL = 267,
+    LESSSAME = 268,
+    BIGGERSAME = 269,
+    SAME = 270,
+    ISNOT = 271,
+    INTEGER = 272,
+    DOUBLE = 273,
+    ID = 274,
+    COLORA = 275,
+    SCALA = 276,
+    GIRA = 277,
+    POSITIONE = 278,
+    ROSSO = 279,
+    VERDE = 280,
+    AZZURO = 281,
+    GIALLO = 282,
+    IF = 283,
+    THEN = 284,
+    WHILE = 285,
+    FOREACH = 286,
+    REPEAT = 287,
+    VAR = 288,
+    ARROW = 289
   };
 #endif
 
@@ -92,7 +91,7 @@ union YYSTYPE
 	double d;
 	node *n;
 
-#line 96 "klx.tab.h" /* yacc.c:1909  */
+#line 95 "klx.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

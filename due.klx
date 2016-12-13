@@ -1,13 +1,45 @@
-// blablabla
-
-:100:-200
-	::luogo
-:0.9:0:0.4
-	::colora
-:90+90
-	::gira
-		:::pacman
-		:::cerchio
-:-150:200::luogo:60:8:::poligono
+// autrice	:     	Sarah K. Eydel
+// corso	:    costruzione de compilatore
+// università	:   scienze applicate a monaco
+// 	lingua	:  klx
 
 
+var@y
+200@y
+
+var@x
+ 45@x
+
+:1.3:1.3				::scala
+:-50:-150			::luogo
+:0.1:0:0.4		::colora
+:90+x		::gira
+:::pacman
+
+:verde::colora
+:::pacman
+
+var@b
+0.7@b
+		
+#9
+{
+	:b:b		::scala
+	:+50:-50	::luogo
+	:0.8:0:.7	::colora	:::cerchio
+	b+0.05@b
+}
+
+var@z
+0.5@z
+
+	while(x > 0 & y > 0){
+:z:0.8:0.5::colora
+:x:y	::luogo		:60:3:::poligono
+
+x-1@x
+y-1@y
+
+	}
+
+:::cerchio 	

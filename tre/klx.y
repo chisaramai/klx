@@ -18,7 +18,7 @@ void yyerror(const char *msg);
 %token CERCHIO RETTANGOLO TRIANGOLO SETTORE PACMAN PENTAGONO POLIGONO QUADRATO
 %token DUE QUADDRO SEI OTTO
 %token EOL
-%token LESSSAME BIGGERSAME SAME
+%token LESSSAME BIGGERSAME SAME ISNOT
 %token <i> INTEGER
 %token <d> DOUBLE
 %token <n> ID
@@ -148,7 +148,7 @@ boolatomic: '(' bool ')';
 expr: product;
 expr: expr '+' product 			{printf("add ");};
 expr: expr '-' product 			{printf("sub ");};
-expr: expr '%' product			{printf("%");}
+expr: expr '%' product			{printf("mod ");};
 
 product: exponent;
 product: product '*' exponent 		{printf("mul ");};

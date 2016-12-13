@@ -25,4 +25,59 @@ end } def
 /klxi 0 def 
 7 /klxi exch store
 7  { 4 dict begin
-klxi 
+klxi 2 mod 0 eq {
+4 dict begin
+gsave
+klxangle rotate 0.200000 0.200000 scale klxx klxy translate
+0 1 0 setrgbcolor
+newpath 0 0 60 0 360 arc
+0 0 lineto
+closepath
+fill
+grestore
+4 setlinewidth
+.75 setgray
+stroke
+end
+} if
+klxi 2 mod 0 eq not {
+4 dict begin
+gsave
+klxangle rotate 0.500000 0.500000 scale klxx klxy translate
+klxred klxgreen klxblue  setrgbcolor
+newpath 0 0 60 30 330 arc
+0 0 lineto
+fill
+grestore
+4 setlinewidth
+.75 setgray
+stroke
+end
+} if
+klxred 0.100000 sub /klxred exch store
+klxgreen 0.100000 add /klxgreen exch store
+klxblue 0.100000 add /klxblue exch store
+klxx 130 add /klxx exch store
+klxi 1 sub /klxi exch store
+end
+ } repeat
+klxangle 90 add /klxangle exch store
+10  { 4 dict begin
+gsave
+klxangle rotate 0.600000 0.600000 scale klxx klxy translate
+klxred klxgreen klxblue  setrgbcolor
+newpath 0 0 60 30 330 arc
+0 0 lineto
+fill
+grestore
+4 setlinewidth
+.75 setgray
+stroke
+klxred 0.100000 sub /klxred exch store
+klxgreen 0.100000 add /klxgreen exch store
+klxblue 0.100000 add /klxblue exch store
+klxy 130 add /klxy exch store
+end
+ } repeat
+
+showpage

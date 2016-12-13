@@ -1,0 +1,80 @@
+// autrice	:     	Sarah K. Eydel
+// corso	:   Architettura dei compilatori
+// università	:   Università delle scienze applicate a monaco
+// 	lingua	:  klx
+
+	var@x
+	var@y
+	var@angle
+	var@red
+	var@green
+	var@blue
+ 	
+
+ 40->x
+ 95@y
+  0@angle
+
+	1.0@red
+  0.2@green
+1.0@blue
+var@sides
+8@sides
+
+
+#8{
+
+	:.6:.6				::scala
+		:angle					::gira
+	:x:y			::positione
+	:red:green:blue	::colora
+		:::cerchio
+
+	angle+45@angle
+	red+0.1@red
+	green+0.1@green
+	blue+0.1@blue
+}
+#8
+{
+	:.6:.6				::scala
+		:angle					::gira
+	:x:y			::positione
+	:red:green:blue	::colora
+    :50:8:::poligono
+
+	angle+45@angle
+	red+0.1@red
+	green+0.1@green
+	blue+0.1@blue
+}
+
+0@x
+0@y
+
+:0.6:0.6::scala
+:x:y	::positione
+:1:1:0	::colora
+:::cerchio
+
+100@x
+200@y
+
+#8
+{
+
+	:.6:.6				::scala
+		:angle					::gira
+	:x:y			::positione
+	:red:green:blue	::colora
+    :50:8:::poligono
+
+	angle+45@angle
+	red+0.1@red
+	green+0.1@green
+	blue+0.1@blue
+}
+
+:x:y		  ::positione
+:50:sides		:::poligono
+

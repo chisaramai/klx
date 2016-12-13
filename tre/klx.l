@@ -38,6 +38,7 @@ EXP ([Ee][+-]?[0-9]+)
 "^" |
 "," |
 "&" |
+"!" |
 "|"   	 		{ return yytext[0]; }
 0|[1-9][0-9]*		{ yylval.i = atoi(yytext); return INTEGER;}
 [0-9]+\.[0-9]*{EXP}?|\.[0-9]+{EXP}? 	{ yylval.d = atof(yytext); return DOUBLE; }
@@ -68,6 +69,7 @@ positione		return POSITIONE;
 "<="			return LESSSAME;
 ">="			return BIGGERSAME;
 "=="			return SAME;
+"!="			return ISNOT;
 [a-zA-Z]+		{ yylval.n = lookup(yytext);
 				if(yylval.n == NULL) yylval.n = insert(yytext); 
 				return ID;}

@@ -7,6 +7,7 @@ Terminals unused in grammar
    QUADRATO
    OTTO
    EOL
+   ISNOT
    GIALLO
    FOREACH
    REPEAT
@@ -69,55 +70,56 @@ Grammar
    30 expr: product
    31     | expr '+' product
    32     | expr '-' product
+   33     | expr '%' product
 
-   33 product: exponent
-   34        | product '*' exponent
-   35        | product '/' exponent
+   34 product: exponent
+   35        | product '*' exponent
+   36        | product '/' exponent
 
-   36 exponent: praefix
-   37         | praefix '^' exponent
+   37 exponent: praefix
+   38         | praefix '^' exponent
 
-   38 praefix: atomic
-   39        | '+' atomic
-   40        | '-' atomic
+   39 praefix: atomic
+   40        | '+' atomic
+   41        | '-' atomic
 
-   41 atomic: INTEGER
-   42       | DOUBLE
-   43       | ID
-   44       | '(' expr ')'
+   42 atomic: INTEGER
+   43       | DOUBLE
+   44       | ID
+   45       | '(' expr ')'
 
-   45 klecks: SEI PACMAN
-   46       | SEI CERCHIO
-   47       | DUE expr DUE expr SEI POLIGONO
+   46 klecks: SEI PACMAN
+   47       | SEI CERCHIO
+   48       | DUE expr DUE expr SEI POLIGONO
 
-   48 setup: %empty
+   49 setup: %empty
 
-   49 teardown: %empty
+   50 teardown: %empty
 
-   50 optlist: %empty
-   51        | optlist opt
+   51 optlist: %empty
+   52        | optlist opt
 
-   52 opt: scala
-   53    | gira
-   54    | colora
-   55    | positione
+   53 opt: scala
+   54    | gira
+   55    | colora
+   56    | positione
 
-   56 scala: DUE expr DUE expr QUADDRO SCALA
+   57 scala: DUE expr DUE expr QUADDRO SCALA
 
-   57 gira: DUE expr QUADDRO GIRA
+   58 gira: DUE expr QUADDRO GIRA
 
-   58 colora: DUE colore QUADDRO COLORA
+   59 colora: DUE colore QUADDRO COLORA
 
-   59 colore: ROSSO
-   60       | VERDE
-   61       | AZZURO
-   62       | rgbcode
+   60 colore: ROSSO
+   61       | VERDE
+   62       | AZZURO
+   63       | rgbcode
 
-   63 rgbcode: expr DUE expr DUE expr
+   64 rgbcode: expr DUE expr DUE expr
 
-   64 positione: DUE expr DUE expr QUADDRO POSITIONE
+   65 positione: DUE expr DUE expr QUADDRO POSITIONE
 
-   65 trailer: %empty
+   66 trailer: %empty
 
 
 Terminals, with rules where they appear
@@ -125,123 +127,125 @@ Terminals, with rules where they appear
 $end (0) 0
 '!' (33) 23
 '#' (35) 18
+'%' (37) 33
 '&' (38) 20
-'(' (40) 10 29 44
-')' (41) 10 29 44
-'*' (42) 34
-'+' (43) 31 39
-'-' (45) 32 40
-'/' (47) 35
+'(' (40) 10 29 45
+')' (41) 10 29 45
+'*' (42) 35
+'+' (43) 31 40
+'-' (45) 32 41
+'/' (47) 36
 '<' (60) 24
 '>' (62) 26
 '@' (64) 11 16
-'^' (94) 37
+'^' (94) 38
 '{' (123) 15
 '|' (124) 21
 '}' (125) 15
 error (256)
-CERCHIO (258) 46
+CERCHIO (258) 47
 RETTANGOLO (259)
 TRIANGOLO (260)
 SETTORE (261)
-PACMAN (262) 45
+PACMAN (262) 46
 PENTAGONO (263)
-POLIGONO (264) 47
+POLIGONO (264) 48
 QUADRATO (265)
-DUE (266) 47 56 57 58 63 64
-QUADDRO (267) 56 57 58 64
-SEI (268) 45 46 47
+DUE (266) 48 57 58 59 64 65
+QUADDRO (267) 57 58 59 65
+SEI (268) 46 47 48
 OTTO (269)
 EOL (270)
 LESSSAME (271) 25
 BIGGERSAME (272) 27
 SAME (273) 28
-INTEGER (274) 41
-DOUBLE (275) 42
-ID (276) 11 16 43
-COLORA (277) 58
-SCALA (278) 56
-GIRA (279) 57
-POSITIONE (280) 64
-ROSSO (281) 59
-VERDE (282) 60
-AZZURO (283) 61
-GIALLO (284)
-IF (285) 13
-THEN (286) 13
-WHILE (287) 10
-FOREACH (288)
-REPEAT (289)
-VAR (290) 11
+ISNOT (274)
+INTEGER (275) 42
+DOUBLE (276) 43
+ID (277) 11 16 44
+COLORA (278) 59
+SCALA (279) 57
+GIRA (280) 58
+POSITIONE (281) 65
+ROSSO (282) 60
+VERDE (283) 61
+AZZURO (284) 62
+GIALLO (285)
+IF (286) 13
+THEN (287) 13
+WHILE (288) 10
+FOREACH (289)
+REPEAT (290)
+VAR (291) 11
 
 
 Nonterminals, with rules where they appear
 
-$accept (52)
+$accept (54)
     on left: 0
-programma (53)
+programma (55)
     on left: 1, on right: 0
-header (54)
+header (56)
     on left: 2, on right: 1
-setting (55)
+setting (57)
     on left: 3, on right: 1
-functions (56)
+functions (58)
     on left: 4, on right: 1
-stmlist (57)
+stmlist (59)
     on left: 5 6, on right: 1 6 15
-stmt (58)
+stmt (60)
     on left: 7 10 11 13 15 16 18, on right: 6 10 13 18
-$@1 (59)
+$@1 (61)
     on left: 8, on right: 10
-$@2 (60)
+$@2 (62)
     on left: 9, on right: 10
-$@3 (61)
+$@3 (63)
     on left: 12, on right: 13
-$@4 (62)
+$@4 (64)
     on left: 14, on right: 15
-$@5 (63)
+$@5 (65)
     on left: 17, on right: 18
-bool (64)
+bool (66)
     on left: 19 20 21, on right: 10 13 20 21 29
-boolpraefix (65)
+boolpraefix (67)
     on left: 22 23, on right: 19 20 21
-boolatomic (66)
+boolatomic (68)
     on left: 24 25 26 27 28 29, on right: 22 23
-expr (67)
-    on left: 30 31 32, on right: 16 18 24 25 26 27 28 31 32 44 47 56
-    57 63 64
-product (68)
-    on left: 33 34 35, on right: 30 31 32 34 35
-exponent (69)
-    on left: 36 37, on right: 33 34 35 37
-praefix (70)
-    on left: 38 39 40, on right: 36 37
-atomic (71)
-    on left: 41 42 43 44, on right: 38 39 40
-klecks (72)
-    on left: 45 46 47, on right: 7
-setup (73)
-    on left: 48, on right: 7
-teardown (74)
+expr (69)
+    on left: 30 31 32 33, on right: 16 18 24 25 26 27 28 31 32 33 45
+    48 57 58 64 65
+product (70)
+    on left: 34 35 36, on right: 30 31 32 33 35 36
+exponent (71)
+    on left: 37 38, on right: 34 35 36 38
+praefix (72)
+    on left: 39 40 41, on right: 37 38
+atomic (73)
+    on left: 42 43 44 45, on right: 39 40 41
+klecks (74)
+    on left: 46 47 48, on right: 7
+setup (75)
     on left: 49, on right: 7
-optlist (75)
-    on left: 50 51, on right: 7 51
-opt (76)
-    on left: 52 53 54 55, on right: 51
-scala (77)
-    on left: 56, on right: 52
-gira (78)
+teardown (76)
+    on left: 50, on right: 7
+optlist (77)
+    on left: 51 52, on right: 7 52
+opt (78)
+    on left: 53 54 55 56, on right: 52
+scala (79)
     on left: 57, on right: 53
-colora (79)
+gira (80)
     on left: 58, on right: 54
-colore (80)
-    on left: 59 60 61 62, on right: 58
-rgbcode (81)
-    on left: 63, on right: 62
-positione (82)
-    on left: 64, on right: 55
-trailer (83)
-    on left: 65, on right: 1
+colora (81)
+    on left: 59, on right: 55
+colore (82)
+    on left: 60 61 62 63, on right: 59
+rgbcode (83)
+    on left: 64, on right: 63
+positione (84)
+    on left: 65, on right: 56
+trailer (85)
+    on left: 66, on right: 1
 
 
 State 0
@@ -312,8 +316,8 @@ State 6
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    $end      reduce using rule 65 (trailer)
-    $default  reduce using rule 48 (setup)
+    $end      reduce using rule 66 (trailer)
+    $default  reduce using rule 49 (setup)
 
     stmt      go to state 18
     expr      go to state 19
@@ -327,23 +331,23 @@ State 6
 
 State 7
 
-   41 atomic: INTEGER .
-
-    $default  reduce using rule 41 (atomic)
-
-
-State 8
-
-   42 atomic: DOUBLE .
+   42 atomic: INTEGER .
 
     $default  reduce using rule 42 (atomic)
 
 
-State 9
+State 8
 
-   43 atomic: ID .
+   43 atomic: DOUBLE .
 
     $default  reduce using rule 43 (atomic)
+
+
+State 9
+
+   44 atomic: ID .
+
+    $default  reduce using rule 44 (atomic)
 
 
 State 10
@@ -386,7 +390,7 @@ State 12
 
 State 13
 
-   44 atomic: '(' . expr ')'
+   45 atomic: '(' . expr ')'
 
     INTEGER  shift, and go to state 7
     DOUBLE   shift, and go to state 8
@@ -431,7 +435,7 @@ State 15
 
 State 16
 
-   39 praefix: '+' . atomic
+   40 praefix: '+' . atomic
 
     INTEGER  shift, and go to state 7
     DOUBLE   shift, and go to state 8
@@ -443,7 +447,7 @@ State 16
 
 State 17
 
-   40 praefix: '-' . atomic
+   41 praefix: '-' . atomic
 
     INTEGER  shift, and go to state 7
     DOUBLE   shift, and go to state 8
@@ -465,55 +469,57 @@ State 19
    16 stmt: expr . '@' ID
    31 expr: expr . '+' product
    32     | expr . '-' product
+   33     | expr . '%' product
 
     '@'  shift, and go to state 39
     '+'  shift, and go to state 40
     '-'  shift, and go to state 41
+    '%'  shift, and go to state 42
 
 
 State 20
 
    30 expr: product .
-   34 product: product . '*' exponent
-   35        | product . '/' exponent
+   35 product: product . '*' exponent
+   36        | product . '/' exponent
 
-    '*'  shift, and go to state 42
-    '/'  shift, and go to state 43
+    '*'  shift, and go to state 43
+    '/'  shift, and go to state 44
 
     $default  reduce using rule 30 (expr)
 
 
 State 21
 
-   33 product: exponent .
+   34 product: exponent .
 
-    $default  reduce using rule 33 (product)
+    $default  reduce using rule 34 (product)
 
 
 State 22
 
-   36 exponent: praefix .
-   37         | praefix . '^' exponent
+   37 exponent: praefix .
+   38         | praefix . '^' exponent
 
-    '^'  shift, and go to state 44
+    '^'  shift, and go to state 45
 
-    $default  reduce using rule 36 (exponent)
+    $default  reduce using rule 37 (exponent)
 
 
 State 23
 
-   38 praefix: atomic .
+   39 praefix: atomic .
 
-    $default  reduce using rule 38 (praefix)
+    $default  reduce using rule 39 (praefix)
 
 
 State 24
 
     7 stmt: setup . optlist klecks teardown
 
-    $default  reduce using rule 50 (optlist)
+    $default  reduce using rule 51 (optlist)
 
-    optlist  go to state 45
+    optlist  go to state 46
 
 
 State 25
@@ -534,7 +540,7 @@ State 26
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    boolatomic  go to state 46
+    boolatomic  go to state 47
     expr        go to state 31
     product     go to state 20
     exponent    go to state 21
@@ -545,7 +551,7 @@ State 26
 State 27
 
    29 boolatomic: '(' . bool ')'
-   44 atomic: '(' . expr ')'
+   45 atomic: '(' . expr ')'
 
     INTEGER  shift, and go to state 7
     DOUBLE   shift, and go to state 8
@@ -555,10 +561,10 @@ State 27
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    bool         go to state 47
+    bool         go to state 48
     boolpraefix  go to state 29
     boolatomic   go to state 30
-    expr         go to state 48
+    expr         go to state 49
     product      go to state 20
     exponent     go to state 21
     praefix      go to state 22
@@ -571,9 +577,9 @@ State 28
    20 bool: bool . '&' boolpraefix
    21     | bool . '|' boolpraefix
 
-    THEN  shift, and go to state 49
-    '|'   shift, and go to state 50
-    '&'   shift, and go to state 51
+    THEN  shift, and go to state 50
+    '|'   shift, and go to state 51
+    '&'   shift, and go to state 52
 
 
 State 29
@@ -599,39 +605,43 @@ State 31
    28           | expr . SAME expr
    31 expr: expr . '+' product
    32     | expr . '-' product
+   33     | expr . '%' product
 
-    LESSSAME    shift, and go to state 52
-    BIGGERSAME  shift, and go to state 53
-    SAME        shift, and go to state 54
-    '<'         shift, and go to state 55
-    '>'         shift, and go to state 56
+    LESSSAME    shift, and go to state 53
+    BIGGERSAME  shift, and go to state 54
+    SAME        shift, and go to state 55
+    '<'         shift, and go to state 56
+    '>'         shift, and go to state 57
     '+'         shift, and go to state 40
     '-'         shift, and go to state 41
+    '%'         shift, and go to state 42
 
 
 State 32
 
    10 stmt: WHILE $@1 . '(' bool ')' $@2 stmt
 
-    '('  shift, and go to state 57
+    '('  shift, and go to state 58
 
 
 State 33
 
    11 stmt: VAR '@' . ID
 
-    ID  shift, and go to state 58
+    ID  shift, and go to state 59
 
 
 State 34
 
    31 expr: expr . '+' product
    32     | expr . '-' product
-   44 atomic: '(' expr . ')'
+   33     | expr . '%' product
+   45 atomic: '(' expr . ')'
 
-    ')'  shift, and go to state 59
+    ')'  shift, and go to state 60
     '+'  shift, and go to state 40
     '-'  shift, and go to state 41
+    '%'  shift, and go to state 42
 
 
 State 35
@@ -640,7 +650,7 @@ State 35
 
     $default  reduce using rule 5 (stmlist)
 
-    stmlist  go to state 60
+    stmlist  go to state 61
 
 
 State 36
@@ -648,36 +658,38 @@ State 36
    18 stmt: '#' expr . $@5 stmt
    31 expr: expr . '+' product
    32     | expr . '-' product
+   33     | expr . '%' product
 
     '+'  shift, and go to state 40
     '-'  shift, and go to state 41
+    '%'  shift, and go to state 42
 
     '+'       [reduce using rule 17 ($@5)]
     '-'       [reduce using rule 17 ($@5)]
     $default  reduce using rule 17 ($@5)
 
-    $@5  go to state 61
+    $@5  go to state 62
 
 
 State 37
 
-   39 praefix: '+' atomic .
+   40 praefix: '+' atomic .
 
-    $default  reduce using rule 39 (praefix)
+    $default  reduce using rule 40 (praefix)
 
 
 State 38
 
-   40 praefix: '-' atomic .
+   41 praefix: '-' atomic .
 
-    $default  reduce using rule 40 (praefix)
+    $default  reduce using rule 41 (praefix)
 
 
 State 39
 
    16 stmt: expr '@' . ID
 
-    ID  shift, and go to state 62
+    ID  shift, and go to state 63
 
 
 State 40
@@ -691,7 +703,7 @@ State 40
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    product   go to state 63
+    product   go to state 64
     exponent  go to state 21
     praefix   go to state 22
     atomic    go to state 23
@@ -708,7 +720,7 @@ State 41
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    product   go to state 64
+    product   go to state 65
     exponent  go to state 21
     praefix   go to state 22
     atomic    go to state 23
@@ -716,7 +728,7 @@ State 41
 
 State 42
 
-   34 product: product '*' . exponent
+   33 expr: expr '%' . product
 
     INTEGER  shift, and go to state 7
     DOUBLE   shift, and go to state 8
@@ -725,30 +737,15 @@ State 42
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    exponent  go to state 65
+    product   go to state 66
+    exponent  go to state 21
     praefix   go to state 22
     atomic    go to state 23
 
 
 State 43
 
-   35 product: product '/' . exponent
-
-    INTEGER  shift, and go to state 7
-    DOUBLE   shift, and go to state 8
-    ID       shift, and go to state 9
-    '('      shift, and go to state 13
-    '+'      shift, and go to state 16
-    '-'      shift, and go to state 17
-
-    exponent  go to state 66
-    praefix   go to state 22
-    atomic    go to state 23
-
-
-State 44
-
-   37 exponent: praefix '^' . exponent
+   35 product: product '*' . exponent
 
     INTEGER  shift, and go to state 7
     DOUBLE   shift, and go to state 8
@@ -762,41 +759,73 @@ State 44
     atomic    go to state 23
 
 
+State 44
+
+   36 product: product '/' . exponent
+
+    INTEGER  shift, and go to state 7
+    DOUBLE   shift, and go to state 8
+    ID       shift, and go to state 9
+    '('      shift, and go to state 13
+    '+'      shift, and go to state 16
+    '-'      shift, and go to state 17
+
+    exponent  go to state 68
+    praefix   go to state 22
+    atomic    go to state 23
+
+
 State 45
 
-    7 stmt: setup optlist . klecks teardown
-   51 optlist: optlist . opt
+   38 exponent: praefix '^' . exponent
 
-    DUE  shift, and go to state 68
-    SEI  shift, and go to state 69
+    INTEGER  shift, and go to state 7
+    DOUBLE   shift, and go to state 8
+    ID       shift, and go to state 9
+    '('      shift, and go to state 13
+    '+'      shift, and go to state 16
+    '-'      shift, and go to state 17
 
-    klecks     go to state 70
-    opt        go to state 71
-    scala      go to state 72
-    gira       go to state 73
-    colora     go to state 74
-    positione  go to state 75
+    exponent  go to state 69
+    praefix   go to state 22
+    atomic    go to state 23
 
 
 State 46
+
+    7 stmt: setup optlist . klecks teardown
+   52 optlist: optlist . opt
+
+    DUE  shift, and go to state 70
+    SEI  shift, and go to state 71
+
+    klecks     go to state 72
+    opt        go to state 73
+    scala      go to state 74
+    gira       go to state 75
+    colora     go to state 76
+    positione  go to state 77
+
+
+State 47
 
    23 boolpraefix: '!' boolatomic .
 
     $default  reduce using rule 23 (boolpraefix)
 
 
-State 47
+State 48
 
    20 bool: bool . '&' boolpraefix
    21     | bool . '|' boolpraefix
    29 boolatomic: '(' bool . ')'
 
-    '|'  shift, and go to state 50
-    '&'  shift, and go to state 51
-    ')'  shift, and go to state 76
+    '|'  shift, and go to state 51
+    '&'  shift, and go to state 52
+    ')'  shift, and go to state 78
 
 
-State 48
+State 49
 
    24 boolatomic: expr . '<' expr
    25           | expr . LESSSAME expr
@@ -805,28 +834,30 @@ State 48
    28           | expr . SAME expr
    31 expr: expr . '+' product
    32     | expr . '-' product
-   44 atomic: '(' expr . ')'
+   33     | expr . '%' product
+   45 atomic: '(' expr . ')'
 
-    LESSSAME    shift, and go to state 52
-    BIGGERSAME  shift, and go to state 53
-    SAME        shift, and go to state 54
-    ')'         shift, and go to state 59
-    '<'         shift, and go to state 55
-    '>'         shift, and go to state 56
+    LESSSAME    shift, and go to state 53
+    BIGGERSAME  shift, and go to state 54
+    SAME        shift, and go to state 55
+    ')'         shift, and go to state 60
+    '<'         shift, and go to state 56
+    '>'         shift, and go to state 57
     '+'         shift, and go to state 40
     '-'         shift, and go to state 41
+    '%'         shift, and go to state 42
 
 
-State 49
+State 50
 
    13 stmt: IF bool THEN . $@3 stmt
 
     $default  reduce using rule 12 ($@3)
 
-    $@3  go to state 77
+    $@3  go to state 79
 
 
-State 50
+State 51
 
    21 bool: bool '|' . boolpraefix
 
@@ -838,7 +869,7 @@ State 50
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    boolpraefix  go to state 78
+    boolpraefix  go to state 80
     boolatomic   go to state 30
     expr         go to state 31
     product      go to state 20
@@ -847,7 +878,7 @@ State 50
     atomic       go to state 23
 
 
-State 51
+State 52
 
    20 bool: bool '&' . boolpraefix
 
@@ -859,7 +890,7 @@ State 51
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    boolpraefix  go to state 79
+    boolpraefix  go to state 81
     boolatomic   go to state 30
     expr         go to state 31
     product      go to state 20
@@ -868,45 +899,9 @@ State 51
     atomic       go to state 23
 
 
-State 52
-
-   25 boolatomic: expr LESSSAME . expr
-
-    INTEGER  shift, and go to state 7
-    DOUBLE   shift, and go to state 8
-    ID       shift, and go to state 9
-    '('      shift, and go to state 13
-    '+'      shift, and go to state 16
-    '-'      shift, and go to state 17
-
-    expr      go to state 80
-    product   go to state 20
-    exponent  go to state 21
-    praefix   go to state 22
-    atomic    go to state 23
-
-
 State 53
 
-   27 boolatomic: expr BIGGERSAME . expr
-
-    INTEGER  shift, and go to state 7
-    DOUBLE   shift, and go to state 8
-    ID       shift, and go to state 9
-    '('      shift, and go to state 13
-    '+'      shift, and go to state 16
-    '-'      shift, and go to state 17
-
-    expr      go to state 81
-    product   go to state 20
-    exponent  go to state 21
-    praefix   go to state 22
-    atomic    go to state 23
-
-
-State 54
-
-   28 boolatomic: expr SAME . expr
+   25 boolatomic: expr LESSSAME . expr
 
     INTEGER  shift, and go to state 7
     DOUBLE   shift, and go to state 8
@@ -922,9 +917,9 @@ State 54
     atomic    go to state 23
 
 
-State 55
+State 54
 
-   24 boolatomic: expr '<' . expr
+   27 boolatomic: expr BIGGERSAME . expr
 
     INTEGER  shift, and go to state 7
     DOUBLE   shift, and go to state 8
@@ -940,9 +935,9 @@ State 55
     atomic    go to state 23
 
 
-State 56
+State 55
 
-   26 boolatomic: expr '>' . expr
+   28 boolatomic: expr SAME . expr
 
     INTEGER  shift, and go to state 7
     DOUBLE   shift, and go to state 8
@@ -958,7 +953,43 @@ State 56
     atomic    go to state 23
 
 
+State 56
+
+   24 boolatomic: expr '<' . expr
+
+    INTEGER  shift, and go to state 7
+    DOUBLE   shift, and go to state 8
+    ID       shift, and go to state 9
+    '('      shift, and go to state 13
+    '+'      shift, and go to state 16
+    '-'      shift, and go to state 17
+
+    expr      go to state 85
+    product   go to state 20
+    exponent  go to state 21
+    praefix   go to state 22
+    atomic    go to state 23
+
+
 State 57
+
+   26 boolatomic: expr '>' . expr
+
+    INTEGER  shift, and go to state 7
+    DOUBLE   shift, and go to state 8
+    ID       shift, and go to state 9
+    '('      shift, and go to state 13
+    '+'      shift, and go to state 16
+    '-'      shift, and go to state 17
+
+    expr      go to state 86
+    product   go to state 20
+    exponent  go to state 21
+    praefix   go to state 22
+    atomic    go to state 23
+
+
+State 58
 
    10 stmt: WHILE $@1 '(' . bool ')' $@2 stmt
 
@@ -970,7 +1001,7 @@ State 57
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    bool         go to state 85
+    bool         go to state 87
     boolpraefix  go to state 29
     boolatomic   go to state 30
     expr         go to state 31
@@ -980,21 +1011,21 @@ State 57
     atomic       go to state 23
 
 
-State 58
+State 59
 
    11 stmt: VAR '@' ID .
 
     $default  reduce using rule 11 (stmt)
 
 
-State 59
-
-   44 atomic: '(' expr ')' .
-
-    $default  reduce using rule 44 (atomic)
-
-
 State 60
+
+   45 atomic: '(' expr ')' .
+
+    $default  reduce using rule 45 (atomic)
+
+
+State 61
 
     6 stmlist: stmlist . stmt
    15 stmt: '{' $@4 stmlist . '}'
@@ -1007,12 +1038,12 @@ State 60
     VAR      shift, and go to state 12
     '('      shift, and go to state 13
     '{'      shift, and go to state 14
-    '}'      shift, and go to state 86
+    '}'      shift, and go to state 88
     '#'      shift, and go to state 15
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    $default  reduce using rule 48 (setup)
+    $default  reduce using rule 49 (setup)
 
     stmt      go to state 18
     expr      go to state 19
@@ -1023,7 +1054,7 @@ State 60
     setup     go to state 24
 
 
-State 61
+State 62
 
    18 stmt: '#' expr $@5 . stmt
 
@@ -1039,9 +1070,9 @@ State 61
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    $default  reduce using rule 48 (setup)
+    $default  reduce using rule 49 (setup)
 
-    stmt      go to state 87
+    stmt      go to state 89
     expr      go to state 19
     product   go to state 20
     exponent  go to state 21
@@ -1050,146 +1081,158 @@ State 61
     setup     go to state 24
 
 
-State 62
+State 63
 
    16 stmt: expr '@' ID .
 
     $default  reduce using rule 16 (stmt)
 
 
-State 63
+State 64
 
    31 expr: expr '+' product .
-   34 product: product . '*' exponent
-   35        | product . '/' exponent
+   35 product: product . '*' exponent
+   36        | product . '/' exponent
 
-    '*'  shift, and go to state 42
-    '/'  shift, and go to state 43
+    '*'  shift, and go to state 43
+    '/'  shift, and go to state 44
 
     $default  reduce using rule 31 (expr)
 
 
-State 64
+State 65
 
    32 expr: expr '-' product .
-   34 product: product . '*' exponent
-   35        | product . '/' exponent
+   35 product: product . '*' exponent
+   36        | product . '/' exponent
 
-    '*'  shift, and go to state 42
-    '/'  shift, and go to state 43
+    '*'  shift, and go to state 43
+    '/'  shift, and go to state 44
 
     $default  reduce using rule 32 (expr)
 
 
-State 65
-
-   34 product: product '*' exponent .
-
-    $default  reduce using rule 34 (product)
-
-
 State 66
 
-   35 product: product '/' exponent .
+   33 expr: expr '%' product .
+   35 product: product . '*' exponent
+   36        | product . '/' exponent
 
-    $default  reduce using rule 35 (product)
+    '*'  shift, and go to state 43
+    '/'  shift, and go to state 44
+
+    $default  reduce using rule 33 (expr)
 
 
 State 67
 
-   37 exponent: praefix '^' exponent .
+   35 product: product '*' exponent .
 
-    $default  reduce using rule 37 (exponent)
+    $default  reduce using rule 35 (product)
 
 
 State 68
 
-   47 klecks: DUE . expr DUE expr SEI POLIGONO
-   56 scala: DUE . expr DUE expr QUADDRO SCALA
-   57 gira: DUE . expr QUADDRO GIRA
-   58 colora: DUE . colore QUADDRO COLORA
-   64 positione: DUE . expr DUE expr QUADDRO POSITIONE
+   36 product: product '/' exponent .
 
-    INTEGER  shift, and go to state 7
-    DOUBLE   shift, and go to state 8
-    ID       shift, and go to state 9
-    ROSSO    shift, and go to state 88
-    VERDE    shift, and go to state 89
-    AZZURO   shift, and go to state 90
-    '('      shift, and go to state 13
-    '+'      shift, and go to state 16
-    '-'      shift, and go to state 17
-
-    expr      go to state 91
-    product   go to state 20
-    exponent  go to state 21
-    praefix   go to state 22
-    atomic    go to state 23
-    colore    go to state 92
-    rgbcode   go to state 93
+    $default  reduce using rule 36 (product)
 
 
 State 69
 
-   45 klecks: SEI . PACMAN
-   46       | SEI . CERCHIO
+   38 exponent: praefix '^' exponent .
 
-    CERCHIO  shift, and go to state 94
-    PACMAN   shift, and go to state 95
+    $default  reduce using rule 38 (exponent)
 
 
 State 70
 
-    7 stmt: setup optlist klecks . teardown
+   48 klecks: DUE . expr DUE expr SEI POLIGONO
+   57 scala: DUE . expr DUE expr QUADDRO SCALA
+   58 gira: DUE . expr QUADDRO GIRA
+   59 colora: DUE . colore QUADDRO COLORA
+   65 positione: DUE . expr DUE expr QUADDRO POSITIONE
 
-    $default  reduce using rule 49 (teardown)
+    INTEGER  shift, and go to state 7
+    DOUBLE   shift, and go to state 8
+    ID       shift, and go to state 9
+    ROSSO    shift, and go to state 90
+    VERDE    shift, and go to state 91
+    AZZURO   shift, and go to state 92
+    '('      shift, and go to state 13
+    '+'      shift, and go to state 16
+    '-'      shift, and go to state 17
 
-    teardown  go to state 96
+    expr      go to state 93
+    product   go to state 20
+    exponent  go to state 21
+    praefix   go to state 22
+    atomic    go to state 23
+    colore    go to state 94
+    rgbcode   go to state 95
 
 
 State 71
 
-   51 optlist: optlist opt .
+   46 klecks: SEI . PACMAN
+   47       | SEI . CERCHIO
 
-    $default  reduce using rule 51 (optlist)
+    CERCHIO  shift, and go to state 96
+    PACMAN   shift, and go to state 97
 
 
 State 72
 
-   52 opt: scala .
+    7 stmt: setup optlist klecks . teardown
 
-    $default  reduce using rule 52 (opt)
+    $default  reduce using rule 50 (teardown)
+
+    teardown  go to state 98
 
 
 State 73
 
-   53 opt: gira .
+   52 optlist: optlist opt .
 
-    $default  reduce using rule 53 (opt)
+    $default  reduce using rule 52 (optlist)
 
 
 State 74
 
-   54 opt: colora .
+   53 opt: scala .
 
-    $default  reduce using rule 54 (opt)
+    $default  reduce using rule 53 (opt)
 
 
 State 75
 
-   55 opt: positione .
+   54 opt: gira .
+
+    $default  reduce using rule 54 (opt)
+
+
+State 76
+
+   55 opt: colora .
 
     $default  reduce using rule 55 (opt)
 
 
-State 76
+State 77
+
+   56 opt: positione .
+
+    $default  reduce using rule 56 (opt)
+
+
+State 78
 
    29 boolatomic: '(' bool ')' .
 
     $default  reduce using rule 29 (boolatomic)
 
 
-State 77
+State 79
 
    13 stmt: IF bool THEN $@3 . stmt
 
@@ -1205,9 +1248,9 @@ State 77
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    $default  reduce using rule 48 (setup)
+    $default  reduce using rule 49 (setup)
 
-    stmt      go to state 97
+    stmt      go to state 99
     expr      go to state 19
     product   go to state 20
     exponent  go to state 21
@@ -1216,199 +1259,211 @@ State 77
     setup     go to state 24
 
 
-State 78
+State 80
 
    21 bool: bool '|' boolpraefix .
 
     $default  reduce using rule 21 (bool)
 
 
-State 79
+State 81
 
    20 bool: bool '&' boolpraefix .
 
     $default  reduce using rule 20 (bool)
 
 
-State 80
+State 82
 
    25 boolatomic: expr LESSSAME expr .
    31 expr: expr . '+' product
    32     | expr . '-' product
+   33     | expr . '%' product
 
     '+'  shift, and go to state 40
     '-'  shift, and go to state 41
+    '%'  shift, and go to state 42
 
     $default  reduce using rule 25 (boolatomic)
 
 
-State 81
+State 83
 
    27 boolatomic: expr BIGGERSAME expr .
    31 expr: expr . '+' product
    32     | expr . '-' product
+   33     | expr . '%' product
 
     '+'  shift, and go to state 40
     '-'  shift, and go to state 41
+    '%'  shift, and go to state 42
 
     $default  reduce using rule 27 (boolatomic)
 
 
-State 82
+State 84
 
    28 boolatomic: expr SAME expr .
    31 expr: expr . '+' product
    32     | expr . '-' product
+   33     | expr . '%' product
 
     '+'  shift, and go to state 40
     '-'  shift, and go to state 41
+    '%'  shift, and go to state 42
 
     $default  reduce using rule 28 (boolatomic)
 
 
-State 83
+State 85
 
    24 boolatomic: expr '<' expr .
    31 expr: expr . '+' product
    32     | expr . '-' product
+   33     | expr . '%' product
 
     '+'  shift, and go to state 40
     '-'  shift, and go to state 41
+    '%'  shift, and go to state 42
 
     $default  reduce using rule 24 (boolatomic)
 
 
-State 84
+State 86
 
    26 boolatomic: expr '>' expr .
    31 expr: expr . '+' product
    32     | expr . '-' product
+   33     | expr . '%' product
 
     '+'  shift, and go to state 40
     '-'  shift, and go to state 41
+    '%'  shift, and go to state 42
 
     $default  reduce using rule 26 (boolatomic)
 
 
-State 85
+State 87
 
    10 stmt: WHILE $@1 '(' bool . ')' $@2 stmt
    20 bool: bool . '&' boolpraefix
    21     | bool . '|' boolpraefix
 
-    '|'  shift, and go to state 50
-    '&'  shift, and go to state 51
-    ')'  shift, and go to state 98
+    '|'  shift, and go to state 51
+    '&'  shift, and go to state 52
+    ')'  shift, and go to state 100
 
 
-State 86
+State 88
 
    15 stmt: '{' $@4 stmlist '}' .
 
     $default  reduce using rule 15 (stmt)
 
 
-State 87
+State 89
 
    18 stmt: '#' expr $@5 stmt .
 
     $default  reduce using rule 18 (stmt)
 
 
-State 88
+State 90
 
-   59 colore: ROSSO .
-
-    $default  reduce using rule 59 (colore)
-
-
-State 89
-
-   60 colore: VERDE .
+   60 colore: ROSSO .
 
     $default  reduce using rule 60 (colore)
 
 
-State 90
+State 91
 
-   61 colore: AZZURO .
+   61 colore: VERDE .
 
     $default  reduce using rule 61 (colore)
 
 
-State 91
-
-   31 expr: expr . '+' product
-   32     | expr . '-' product
-   47 klecks: DUE expr . DUE expr SEI POLIGONO
-   56 scala: DUE expr . DUE expr QUADDRO SCALA
-   57 gira: DUE expr . QUADDRO GIRA
-   63 rgbcode: expr . DUE expr DUE expr
-   64 positione: DUE expr . DUE expr QUADDRO POSITIONE
-
-    DUE      shift, and go to state 99
-    QUADDRO  shift, and go to state 100
-    '+'      shift, and go to state 40
-    '-'      shift, and go to state 41
-
-
 State 92
 
-   58 colora: DUE colore . QUADDRO COLORA
-
-    QUADDRO  shift, and go to state 101
-
-
-State 93
-
-   62 colore: rgbcode .
+   62 colore: AZZURO .
 
     $default  reduce using rule 62 (colore)
 
 
+State 93
+
+   31 expr: expr . '+' product
+   32     | expr . '-' product
+   33     | expr . '%' product
+   48 klecks: DUE expr . DUE expr SEI POLIGONO
+   57 scala: DUE expr . DUE expr QUADDRO SCALA
+   58 gira: DUE expr . QUADDRO GIRA
+   64 rgbcode: expr . DUE expr DUE expr
+   65 positione: DUE expr . DUE expr QUADDRO POSITIONE
+
+    DUE      shift, and go to state 101
+    QUADDRO  shift, and go to state 102
+    '+'      shift, and go to state 40
+    '-'      shift, and go to state 41
+    '%'      shift, and go to state 42
+
+
 State 94
 
-   46 klecks: SEI CERCHIO .
+   59 colora: DUE colore . QUADDRO COLORA
 
-    $default  reduce using rule 46 (klecks)
+    QUADDRO  shift, and go to state 103
 
 
 State 95
 
-   45 klecks: SEI PACMAN .
+   63 colore: rgbcode .
 
-    $default  reduce using rule 45 (klecks)
+    $default  reduce using rule 63 (colore)
 
 
 State 96
+
+   47 klecks: SEI CERCHIO .
+
+    $default  reduce using rule 47 (klecks)
+
+
+State 97
+
+   46 klecks: SEI PACMAN .
+
+    $default  reduce using rule 46 (klecks)
+
+
+State 98
 
     7 stmt: setup optlist klecks teardown .
 
     $default  reduce using rule 7 (stmt)
 
 
-State 97
+State 99
 
    13 stmt: IF bool THEN $@3 stmt .
 
     $default  reduce using rule 13 (stmt)
 
 
-State 98
+State 100
 
    10 stmt: WHILE $@1 '(' bool ')' . $@2 stmt
 
     $default  reduce using rule 9 ($@2)
 
-    $@2  go to state 102
+    $@2  go to state 104
 
 
-State 99
+State 101
 
-   47 klecks: DUE expr DUE . expr SEI POLIGONO
-   56 scala: DUE expr DUE . expr QUADDRO SCALA
-   63 rgbcode: expr DUE . expr DUE expr
-   64 positione: DUE expr DUE . expr QUADDRO POSITIONE
+   48 klecks: DUE expr DUE . expr SEI POLIGONO
+   57 scala: DUE expr DUE . expr QUADDRO SCALA
+   64 rgbcode: expr DUE . expr DUE expr
+   65 positione: DUE expr DUE . expr QUADDRO POSITIONE
 
     INTEGER  shift, and go to state 7
     DOUBLE   shift, and go to state 8
@@ -1417,28 +1472,28 @@ State 99
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    expr      go to state 103
+    expr      go to state 105
     product   go to state 20
     exponent  go to state 21
     praefix   go to state 22
     atomic    go to state 23
 
 
-State 100
-
-   57 gira: DUE expr QUADDRO . GIRA
-
-    GIRA  shift, and go to state 104
-
-
-State 101
-
-   58 colora: DUE colore QUADDRO . COLORA
-
-    COLORA  shift, and go to state 105
-
-
 State 102
+
+   58 gira: DUE expr QUADDRO . GIRA
+
+    GIRA  shift, and go to state 106
+
+
+State 103
+
+   59 colora: DUE colore QUADDRO . COLORA
+
+    COLORA  shift, and go to state 107
+
+
+State 104
 
    10 stmt: WHILE $@1 '(' bool ')' $@2 . stmt
 
@@ -1454,9 +1509,9 @@ State 102
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    $default  reduce using rule 48 (setup)
+    $default  reduce using rule 49 (setup)
 
-    stmt      go to state 106
+    stmt      go to state 108
     expr      go to state 19
     product   go to state 20
     exponent  go to state 21
@@ -1465,46 +1520,48 @@ State 102
     setup     go to state 24
 
 
-State 103
+State 105
 
    31 expr: expr . '+' product
    32     | expr . '-' product
-   47 klecks: DUE expr DUE expr . SEI POLIGONO
-   56 scala: DUE expr DUE expr . QUADDRO SCALA
-   63 rgbcode: expr DUE expr . DUE expr
-   64 positione: DUE expr DUE expr . QUADDRO POSITIONE
+   33     | expr . '%' product
+   48 klecks: DUE expr DUE expr . SEI POLIGONO
+   57 scala: DUE expr DUE expr . QUADDRO SCALA
+   64 rgbcode: expr DUE expr . DUE expr
+   65 positione: DUE expr DUE expr . QUADDRO POSITIONE
 
-    DUE      shift, and go to state 107
-    QUADDRO  shift, and go to state 108
-    SEI      shift, and go to state 109
+    DUE      shift, and go to state 109
+    QUADDRO  shift, and go to state 110
+    SEI      shift, and go to state 111
     '+'      shift, and go to state 40
     '-'      shift, and go to state 41
-
-
-State 104
-
-   57 gira: DUE expr QUADDRO GIRA .
-
-    $default  reduce using rule 57 (gira)
-
-
-State 105
-
-   58 colora: DUE colore QUADDRO COLORA .
-
-    $default  reduce using rule 58 (colora)
+    '%'      shift, and go to state 42
 
 
 State 106
+
+   58 gira: DUE expr QUADDRO GIRA .
+
+    $default  reduce using rule 58 (gira)
+
+
+State 107
+
+   59 colora: DUE colore QUADDRO COLORA .
+
+    $default  reduce using rule 59 (colora)
+
+
+State 108
 
    10 stmt: WHILE $@1 '(' bool ')' $@2 stmt .
 
     $default  reduce using rule 10 (stmt)
 
 
-State 107
+State 109
 
-   63 rgbcode: expr DUE expr DUE . expr
+   64 rgbcode: expr DUE expr DUE . expr
 
     INTEGER  shift, and go to state 7
     DOUBLE   shift, and go to state 8
@@ -1513,57 +1570,59 @@ State 107
     '+'      shift, and go to state 16
     '-'      shift, and go to state 17
 
-    expr      go to state 110
+    expr      go to state 112
     product   go to state 20
     exponent  go to state 21
     praefix   go to state 22
     atomic    go to state 23
 
 
-State 108
-
-   56 scala: DUE expr DUE expr QUADDRO . SCALA
-   64 positione: DUE expr DUE expr QUADDRO . POSITIONE
-
-    SCALA      shift, and go to state 111
-    POSITIONE  shift, and go to state 112
-
-
-State 109
-
-   47 klecks: DUE expr DUE expr SEI . POLIGONO
-
-    POLIGONO  shift, and go to state 113
-
-
 State 110
 
-   31 expr: expr . '+' product
-   32     | expr . '-' product
-   63 rgbcode: expr DUE expr DUE expr .
+   57 scala: DUE expr DUE expr QUADDRO . SCALA
+   65 positione: DUE expr DUE expr QUADDRO . POSITIONE
 
-    '+'  shift, and go to state 40
-    '-'  shift, and go to state 41
-
-    $default  reduce using rule 63 (rgbcode)
+    SCALA      shift, and go to state 113
+    POSITIONE  shift, and go to state 114
 
 
 State 111
 
-   56 scala: DUE expr DUE expr QUADDRO SCALA .
+   48 klecks: DUE expr DUE expr SEI . POLIGONO
 
-    $default  reduce using rule 56 (scala)
+    POLIGONO  shift, and go to state 115
 
 
 State 112
 
-   64 positione: DUE expr DUE expr QUADDRO POSITIONE .
+   31 expr: expr . '+' product
+   32     | expr . '-' product
+   33     | expr . '%' product
+   64 rgbcode: expr DUE expr DUE expr .
 
-    $default  reduce using rule 64 (positione)
+    '+'  shift, and go to state 40
+    '-'  shift, and go to state 41
+    '%'  shift, and go to state 42
+
+    $default  reduce using rule 64 (rgbcode)
 
 
 State 113
 
-   47 klecks: DUE expr DUE expr SEI POLIGONO .
+   57 scala: DUE expr DUE expr QUADDRO SCALA .
 
-    $default  reduce using rule 47 (klecks)
+    $default  reduce using rule 57 (scala)
+
+
+State 114
+
+   65 positione: DUE expr DUE expr QUADDRO POSITIONE .
+
+    $default  reduce using rule 65 (positione)
+
+
+State 115
+
+   48 klecks: DUE expr DUE expr SEI POLIGONO .
+
+    $default  reduce using rule 48 (klecks)

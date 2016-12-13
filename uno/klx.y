@@ -15,10 +15,10 @@ void yyerror(const char *msg);
 	node *n;
 }
 
-%token CERCHIO RETTANGOLO TRIANGOLO SETTORE PACMAN PENTAGONO POLIGONO QUADRATO
+%token CERCHIO RETTANGOLO SETTORE PACMAN POLIGONO
 %token DUE QUADDRO SEI OTTO
 %token EOL
-%token LESSSAME BIGGERSAME SAME
+%token LESSSAME BIGGERSAME SAME ISNOT
 %token <i> INTEGER
 %token <d> DOUBLE
 %token <n> ID
@@ -26,7 +26,7 @@ void yyerror(const char *msg);
 %token ROSSO VERDE AZZURO GIALLO
 %token IF THEN WHILE
 %token FOREACH REPEAT
-%token VAR
+%token VAR ARROW
 
 
 %left '|' '&' '!'
@@ -81,10 +81,14 @@ stmt: 	WHILE
 	printf("} loop\n"); 
 }
 ;
-stmt:	VAR '@' ID
+stmt: VAR idList;
+idList: id idList; 
+idList: id;
+
+id:	'@' ID
 { 	
-	$3 -> declared = 1; 
-	printf("/klx%s 0 def \n" , $3 -> symbol); 
+	$2 -> declared = 1; 
+	printf("/klx%s 0 def \n" , $2 -> symbol); 
 }
 ;
 stmt: 	IF bool THEN 
@@ -117,7 +121,7 @@ stmt: 	expr '@' ID
 	printf("/klx%s exch store\n",$3 -> symbol);
 }
 ;
-stmt:  '#' expr 
+stmt:  '#' atomic 
 {	
 	printf(" { ");
 }
@@ -148,6 +152,7 @@ boolatomic: '(' bool ')';
 expr: product;
 expr: expr '+' product 			{printf("add ");};
 expr: expr '-' product 			{printf("sub ");};
+expr: expr '%' product			{printf("mod ");};
 
 product: exponent;
 product: product '*' exponent 		{printf("mul ");};
